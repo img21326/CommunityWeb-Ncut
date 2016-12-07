@@ -8,7 +8,7 @@
  */
 class Auth
 {
-    public function register($request){ //註冊
+    public static function register($request){ //註冊
         $sql="INSERT INTO `contact` (`SID`, `num_txt`, `password`, `name`, `phone`, `email`, `FID`, `group_id`, `sday`, `status`) VALUES ('".$request['SID']."', '".$request['numtxt']."', '".$request['password']."','".$request['name']."', '".$request['phone']."', '".$request['FID']."', '".$request['group_id']."', '".$request['sday']."', '".$request['status']."');";
         if(mysqli_query($sql)){
             return '成功';
