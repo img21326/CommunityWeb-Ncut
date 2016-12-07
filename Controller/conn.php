@@ -5,11 +5,14 @@
  * Date: 2016/12/7
  * Time: 下午 1:31
  */
-$mysqli = new mysqli("localhost", "my_user", "my_password", "world");     //主機,帳號,密碼,資料庫
+function connect(){
+    $mysqli = new mysqli("localhost", "root", "g46292177", "team1");     //主機,帳號,密碼,資料庫
+    return $mysqli;
+}
+
 
 if ($mysqli->connect_errno) {   //失敗時出現的錯誤狀況
     printf("Connect failed: %s\n", $mysqli->connect_error);
-    exit();
 }
 
 
