@@ -6,6 +6,7 @@
  * Date: 2016/12/7
  * Time: 下午 2:56
  */
+namespace Connect;
 class Connect
 {
     public static function conn(){

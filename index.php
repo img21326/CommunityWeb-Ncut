@@ -5,7 +5,7 @@
  * Date: 2016/12/7
  * Time: 下午 1:45
  */
-include('Controller/Auth.php');
+use Auth\Auth;
 
 $arr =[
     "username" => "user",
