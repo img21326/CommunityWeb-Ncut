@@ -35,8 +35,25 @@ class Post
 //        $post->createPost($arr);
     }
 
-    public static function deletePost($id){
-        $sql = SELECT * FROM `post` WHERE `SID` = $id
-        $sql = "DELETE FROM `post` WHERE `post`.`post_id` = 6";
+    public static function deletePost($post_id){
+        $mysqli = Connect::conn();
+        $sqlsid = "SELECT * FROM `post` WHERE `post_id` =". $post_id;
+        $result= $mysqli->query($sqlsid);
+        $user = $result->fetch_object();
+        if($_SESSION['sid']==$user->SID){
+            $sql = "DELETE FROM `post` WHERE `post`.`post_id` = ". $post_id;
+            if (!$mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
+                printf("Errormessage: %s\n", $mysqli->error);
+            }else {
+                return "成功";
+            }
+        }else{
+            return '權限不符';
+        }
+
+        unset($sqlsid);
+        unset($sql);
+        $result->close();
+        $mysqli->close();
     }
 }
