@@ -27,15 +27,26 @@ class Post
         }
         unset($sql);
         $mysqli->close();
-//        $post = new Post();
-//        $arr = [
-//            "contact" => "hi~",
-//            "group" =>  "1",
-//        ];
-//        $post->createPost($arr);
+    }
+    //        $post = new Post();
+    //        $arr = [
+    //            "contact" => "hi~",
+    //            "group" =>  "1",
+    //        ];
+    //        $post->createPost($arr);
+
+    public static function showPost($start,$val){ //從哪裡開始,取幾筆
+        $mysqli = Connect::conn();
+        $sql = "SELECT * FROM `post` ORDER by `post_time` DESC LIMIT ".$start.",".$val;
+        $result= $mysqli->query($sql);
+        while ($row = $result->fetch_array()){
+            $posts[] = $row;
+        }
+        echo json_encode($posts);  //json 取出
+
     }
 
-    public static function deletePost($post_id){
+    public static function deletePost($post_id){  //刪除
         $mysqli = Connect::conn();
         $check = self::check($post_id);
         if($check){
@@ -53,10 +64,10 @@ class Post
         unset($sql);
         $mysqli->close();
     }
-//Post::deletePost(2);
+    //Post::deletePost(2);
 
 
-    public static function editPost($post_id,$request){
+    public static function editPost($post_id,$request){  //修改
         $mysqli = Connect::conn();
         $check = self::check($post_id);
         if($check){
@@ -75,13 +86,13 @@ class Post
         unset($sql);
         $mysqli->close();
     }
-//$arr =[
-//'contact' => 'ne1w one',
-//];
-//$s = Post::editPost(2,$arr);
+    //$arr =[
+    //'contact' => 'ne1w one',
+    //];
+    //$s = Post::editPost(2,$arr);
 
 
-    public static function check($post_id){
+    public static function check($post_id){   //查看是否為作者
         $mysqli = Connect::conn();
         $sql = "SELECT * FROM `post` WHERE `post_id` =". $post_id;
         $result= $mysqli->query($sql);
