@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: localhost
--- 產生時間： 2016-12-08 06:47:18
+-- 產生時間： 2016-12-08 06:48:30
 -- 伺服器版本: 5.7.15-log
 -- PHP 版本： 5.6.26
 
@@ -80,7 +80,7 @@ CREATE TABLE `leave_data` (
 
 CREATE TABLE `member_data` (
   `SID` int(20) NOT NULL COMMENT '會員ID',
-  `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '帳號',
+  `username` varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT '帳號',
   `password` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '密碼',
   `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '姓名',
   `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '電話',
@@ -90,6 +90,13 @@ CREATE TABLE `member_data` (
   `sday` date NOT NULL COMMENT '創辦日期',
   `status` tinyint(1) NOT NULL COMMENT '1.啟動。0.關閉。'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='會員資料';
+
+--
+-- 資料表的匯出資料 `member_data`
+--
+
+INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`, `FID`, `group_id`, `sday`, `status`) VALUES
+(1, 'user', 'ee11cbb19052e40b07aa', 'user', '0919552148', 'test@user.com', NULL, NULL, '2016-12-08', 1);
 
 -- --------------------------------------------------------
 
@@ -126,7 +133,7 @@ ALTER TABLE `member_data`
 -- 使用資料表 AUTO_INCREMENT `member_data`
 --
 ALTER TABLE `member_data`
-  MODIFY `SID` int(20) NOT NULL AUTO_INCREMENT COMMENT '會員ID';
+  MODIFY `SID` int(20) NOT NULL AUTO_INCREMENT COMMENT '會員ID', AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
