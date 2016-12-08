@@ -37,10 +37,8 @@ class Post
 
     public static function deletePost($post_id){
         $mysqli = Connect::conn();
-        $sqlsid = "SELECT * FROM `post` WHERE `post_id` =". $post_id;
-        $result= $mysqli->query($sqlsid);
-        $user = $result->fetch_object();
-        if($_SESSION['sid']==$user->SID){
+        $check = self::check($post_id);
+        if($check){
             $sql = "DELETE FROM `post` WHERE `post`.`post_id` = ". $post_id;
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
                 printf("Errormessage: %s\n", $mysqli->error);
@@ -52,6 +50,20 @@ class Post
         }
 
         unset($sqlsid);
+        unset($sql);
+        $mysqli->close();
+    }
+
+    public static function check($post_id){
+        $mysqli = Connect::conn();
+        $sql = "SELECT * FROM `post` WHERE `post_id` =". $post_id;
+        $result= $mysqli->query($sql);
+        $user = $result->fetch_object();
+        if($_SESSION['sid']==$user->SID){
+            return true;
+        }else{
+            return false;
+        }
         unset($sql);
         $result->close();
         $mysqli->close();
