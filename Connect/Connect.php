@@ -17,18 +17,11 @@ class Connect
         }
         return $mysqli;
     }
-
-
-
-
-
 //  使用sql時將 $mysqli->query
 //  SQL程式碼輸入於("")中
 //  example:
 //  $mysqli->query("CREATE TEMPORARY TABLE myCity LIKE City")
-
 //  SELECT語法用法
 //  $result = $mysqli->query("SELECT Name FROM City LIMIT 10")
-
 //  參考網址：http://php.net/manual/en/class.mysqli.php
 }
