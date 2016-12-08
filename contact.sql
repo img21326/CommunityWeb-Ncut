@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: localhost
--- 產生時間： 2016-12-08 06:18:26
+-- 產生時間： 2016-12-08 06:47:18
 -- 伺服器版本: 5.7.15-log
 -- PHP 版本： 5.6.26
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `dynamic_data` (
   `post_id` int(20) NOT NULL,
   `SID` int(20) NOT NULL COMMENT '誰PO的',
-  `contact` text COMMENT '內容',
+  `contact` text COLLATE utf8_unicode_ci COMMENT '內容',
   `post_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '時間',
   `group_id` int(20) NOT NULL COMMENT '社團ID(在哪個社團)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='動態消息資料表';
@@ -80,13 +80,13 @@ CREATE TABLE `leave_data` (
 
 CREATE TABLE `member_data` (
   `SID` int(20) NOT NULL COMMENT '會員ID',
-  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '帳號',
-  `password` varchar(20) NOT NULL COMMENT '密碼',
-  `name` varchar(20) NOT NULL COMMENT '姓名',
-  `phone` varchar(10) DEFAULT NULL COMMENT '電話',
-  `email` varchar(30) NOT NULL COMMENT 'email',
-  `FID` int(20) NOT NULL COMMENT '好友ID(連friend_data)',
-  `group_id` int(20) NOT NULL COMMENT '社團ID(連group_data)',
+  `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '帳號',
+  `password` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '密碼',
+  `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '姓名',
+  `phone` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '電話',
+  `email` varchar(30) COLLATE utf8_unicode_ci NOT NULL COMMENT 'email',
+  `FID` int(20) DEFAULT NULL COMMENT '好友ID(連friend_data)',
+  `group_id` int(20) DEFAULT NULL COMMENT '社團ID(連group_data)',
   `sday` date NOT NULL COMMENT '創辦日期',
   `status` tinyint(1) NOT NULL COMMENT '1.啟動。0.關閉。'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='會員資料';
@@ -105,6 +105,28 @@ CREATE TABLE `message_data` (
   `status` tinyint(1) NOT NULL COMMENT '1.已讀。2.未讀'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 已匯出資料表的索引
+--
+
+--
+-- 資料表索引 `member_data`
+--
+ALTER TABLE `member_data`
+  ADD PRIMARY KEY (`SID`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `group_id` (`group_id`),
+  ADD KEY `FID` (`FID`);
+
+--
+-- 在匯出的資料表使用 AUTO_INCREMENT
+--
+
+--
+-- 使用資料表 AUTO_INCREMENT `member_data`
+--
+ALTER TABLE `member_data`
+  MODIFY `SID` int(20) NOT NULL AUTO_INCREMENT COMMENT '會員ID';
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
