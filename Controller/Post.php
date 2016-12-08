@@ -53,6 +53,33 @@ class Post
         unset($sql);
         $mysqli->close();
     }
+//Post::deletePost(2);
+
+
+    public static function editPost($post_id,$request){
+        $mysqli = Connect::conn();
+        $check = self::check($post_id);
+        if($check){
+            $contact = $request['contact'];
+            $sql = "UPDATE `post` SET `contact` = '".$contact."' WHERE `post`.`post_id` =".$post_id;
+            if (!$mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
+                printf("Errormessage: %s\n", $mysqli->error);
+            }else {
+                return "成功";
+            }
+        }else{
+            return '權限不符';
+        }
+
+        unset($sqlsid);
+        unset($sql);
+        $mysqli->close();
+    }
+//$arr =[
+//'contact' => 'ne1w one',
+//];
+//$s = Post::editPost(2,$arr);
+
 
     public static function check($post_id){
         $mysqli = Connect::conn();
