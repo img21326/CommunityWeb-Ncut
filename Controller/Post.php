@@ -28,12 +28,7 @@ class Post
         unset($sql);
         $mysqli->close();
     }
-    //        $post = new Post();
-    //        $arr = [
-    //            "contact" => "hi~",
-    //            "group" =>  "1",
-    //        ];
-    //        $post->createPost($arr);
+
 
     public static function showPost($start,$val){ //從哪裡開始,取幾筆
         $mysqli = Connect::conn();
@@ -64,7 +59,7 @@ class Post
         unset($sql);
         $mysqli->close();
     }
-    //Post::deletePost(2);
+
 
 
     public static function editPost($post_id,$request){  //修改
@@ -86,10 +81,7 @@ class Post
         unset($sql);
         $mysqli->close();
     }
-    //$arr =[
-    //'contact' => 'ne1w one',
-    //];
-    //$s = Post::editPost(2,$arr);
+
 
 
     public static function check($post_id){   //查看是否為作者
@@ -107,3 +99,19 @@ class Post
         $mysqli->close();
     }
 }
+/*          新增文章    */
+//        $post = new Post();
+//        $arr = [
+//            "contact" => "hi~",
+//            "group" =>  "1",
+//        ];
+//        $post->createPost($arr);
+/*          修改文章    */
+//$arr =[
+//'contact' => 'ne1w one',
+//];
+//$s = Post::editPost(2,$arr);
+/*          刪除文章    */
+//Post::deletePost(2);
+/*          讀取文章    */
+//Post::showPost($a,$b);從哪裡開始,取幾筆
