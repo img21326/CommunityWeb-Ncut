@@ -9,8 +9,17 @@
 
 class Auth
     {
+
+        public $sid;
+        public $username;
+        public $name;
         public function __construct()
         {
+            if(self::check()){
+                $this->name = $_SESSION['name'];
+                $this->username = $_SESSION['username'];
+                $this->sid = $_SESSION['sid'];
+            }
 
         }
 
