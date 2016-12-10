@@ -13,20 +13,24 @@ class Auth
         public $sid;
         public $username;
         public $name;
+        public $photo;
         public function __construct()
         {
             if(self::check()){
+                $this->photo = $_SESSION['photo'];
                 $this->name = $_SESSION['name'];
                 $this->username = $_SESSION['username'];
                 $this->sid = $_SESSION['sid'];
+
             }
 
         }
 
         public static function register($request){ //註冊
             $mysqli = Connect::conn();
-            $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`, `FID`, `group_id`, `sday`, `status`) VALUES (NULL, '";
-            $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."',";
+            $photopath = self::uploadPhoto($_FILES['photo'],$request['username']);
+            $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `FID`, `group_id`, `sday`, `status`) VALUES (NULL, '";
+            $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."','".$photopath."'";
             $sql=$sql."NULL, NULL, CURRENT_TIMESTAMP,1)";
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息
                printf("Errormessage: %s\n", $mysqli->error);
@@ -46,6 +50,7 @@ class Auth
                 $_SESSION['sid']=$user->SID;
                 $_SESSION['username']=$user->username;
                 $_SESSION['name']=$user->name;
+                $_SESSION['photo']=$user->photo;
                 return '成功';
             }else{
                 return '登入帳號密碼錯誤';
@@ -69,6 +74,16 @@ class Auth
             }
             else
             {
+                return false;
+            }
+        }
+
+        public static function uploadPhoto($file,$name){
+            $uploaddir = 'images/';
+            $uploadfile = $uploaddir . basename(rand(1111, 9999).$file['name']);
+            if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
+                return $uploadfile;
+            } else {
                 return false;
             }
         }

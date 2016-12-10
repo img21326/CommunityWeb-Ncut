@@ -9,30 +9,37 @@
 class Post
 {
     public $sid;
+    public $mysqli;
     public function __construct()
     {
-        $this->sid = $_SESSION['sid'];
+        if(Auth::check()==true){
+            $this->sid = $_SESSION['sid'];
+        }else{
+            //return redirect('login.php');
+        }
+        $this->mysqli=Connect::conn();
     }
 
     public function createPost($requset){   // 新增動態消息
-        $mysqli = Connect::conn();
         $contact = $requset['contact'];
         $group = (isset( $requset['group'])) ? ( $requset['group']) : ("NULL");
         $sql = "INSERT INTO post (post_id, SID, contact, post_time, group_id)";
         $sql = $sql . " VALUES (NULL, '".$this->sid."', '".$contact."', CURRENT_TIMESTAMP, '".$group."');";
-        if (!$mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
-            printf("Errormessage: %s\n", $mysqli->error);
+        if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
+            printf("Errormessage: %s\n", $this->mysqli->error);
         }else{
             return '成功';
         }
         unset($sql);
-        $mysqli->close();
     }
 
-
+//SELECT * FROM `post`,`friend` WHERE post.SID = friend.FID AND friend.FID in (1,2) ORDER by `post_time` DESC LIMIT 0,1
     public static function showPost($start,$val){ //從哪裡開始,取幾筆
         $mysqli = Connect::conn();
-        $sql = "SELECT * FROM `post` ORDER by `post_time` DESC LIMIT ".$start.",".$val;
+        $Friend = new Friend();
+        $friends = $Friend->getFriend();
+        $emFriend = implode(',',$friends); //將取得的朋友（鎮列） 轉換成","排列
+        $sql = "SELECT * FROM `post`,`friend` WHERE friend.SID = post.SID AND friend.Fid in (".$emFriend.") ORDER by `post_time` DESC LIMIT ".$start.",".$val;
         $result= $mysqli->query($sql);
         while ($row = $result->fetch_array()){
             $posts[] = $row;
@@ -41,13 +48,13 @@ class Post
 
     }
 
-    public static function deletePost($post_id){  //刪除
-        $mysqli = Connect::conn();
+    public function deletePost($post_id){  //刪除
+        $this->mysqli = Connect::conn();
         $check = self::check($post_id);
         if($check){
             $sql = "DELETE FROM `post` WHERE `post`.`post_id` = ". $post_id;
-            if (!$mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
-                printf("Errormessage: %s\n", $mysqli->error);
+            if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
+                printf("Errormessage: %s\n", $this->mysqli->error);
             }else {
                 return "成功";
             }
@@ -57,19 +64,17 @@ class Post
 
         unset($sqlsid);
         unset($sql);
-        $mysqli->close();
     }
 
 
 
-    public static function editPost($post_id,$request){  //修改
-        $mysqli = Connect::conn();
+    public function editPost($post_id,$request){  //修改
         $check = self::check($post_id);
         if($check){
             $contact = $request['contact'];
             $sql = "UPDATE `post` SET `contact` = '".$contact."' WHERE `post`.`post_id` =".$post_id;
-            if (!$mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
-                printf("Errormessage: %s\n", $mysqli->error);
+            if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
+                printf("Errormessage: %s\n", $this->mysqli->error);
             }else {
                 return "成功";
             }
@@ -79,7 +84,6 @@ class Post
 
         unset($sqlsid);
         unset($sql);
-        $mysqli->close();
     }
 
 

@@ -1,0 +1,27 @@
+.container{
+    width: 922px;
+}
+
+.header{
+    margin-bottom: 20px;
+}
+
+.jumbotron{
+    background: #95CACA;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.clear{
+    clear: both;
+}
+
+.right{
+    float: right;
+}
+
+.photo{
+    margin-left: auto;margin-right: auto;
+    width: 400px;
+    margin-bottom: 30px;
+}
