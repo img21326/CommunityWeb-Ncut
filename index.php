@@ -43,17 +43,17 @@ if(!$s){
 
 
             <div class="clear"></div>
-            <div class="col-md-3">
-                <img src="images/attach.png" style="max-width: 120px;">
+            <div class="">
+
             </div>
-            <div class="col-md-3">
-                <img src="images/brainstorming.png" style="max-width: 120px;">
+            <div class="col-md-offset-3 col-md-2 ko" qw="好朋友">
+                <img src="images/user.png" style="max-width: 80px;">
             </div>
-            <div class="col-md-3">
-                <img src="images/content.png" style="max-width: 120px;">
+            <div class="col-md-2 ko" qw="群組">
+                <img src="images/team.png" style="max-width: 80px;">
             </div>
-            <div class="col-md-3">
-                <img src="images/message.png" style="max-width: 120px;">
+            <div class="col-md-2 ko" qw="訊息">
+                <img src="images/networking.png" style="max-width: 80px;">
             </div>
         </div>
         <div class="row marketing">
@@ -77,7 +77,7 @@ if(!$s){
 
 
                 ?>
-                
+
 
             </div>
         </div>
@@ -86,7 +86,13 @@ if(!$s){
         </footer>
     </div>
     </body>
-
+    <script>
+        $('.ko').mouseenter(function() {
+            layer.tips($(this).attr('qw'), this, {
+                tips: [3, '#78BA32']
+            });
+        });
+    </script>
 
 </html>
 
