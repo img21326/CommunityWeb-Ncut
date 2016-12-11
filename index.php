@@ -73,21 +73,6 @@ if(!$s){
                 } //看看是否有新增貼文
                 ?>
             </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7">
