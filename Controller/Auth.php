@@ -28,14 +28,20 @@ class Auth
 
         public static function register($request){ //註冊
             $mysqli = Connect::conn();
+            if($request['password']!=$request['checkpassword']){
+                return redirect('register.php?meg=ckeckerror');
+            }elseif(!self::checkusername($request['username'])){
+                return redirect('register.php?meg=usernamerror');
+            }
             $photopath = self::uploadPhoto($_FILES['photo'],$request['username']);
             $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `FID`, `group_id`, `sday`, `status`) VALUES (NULL, '";
-            $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."','".$photopath."'";
+            $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."','".$photopath."',";
             $sql=$sql."NULL, NULL, CURRENT_TIMESTAMP,1)";
+            echo $sql;
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息
                printf("Errormessage: %s\n", $mysqli->error);
             }else{
-                return '成功';
+                return redirect('login.php?meg=register');
             }
             unset($sql);
             $mysqli->close();
@@ -51,9 +57,9 @@ class Auth
                 $_SESSION['username']=$user->username;
                 $_SESSION['name']=$user->name;
                 $_SESSION['photo']=$user->photo;
-                return '成功';
+                return true;
             }else{
-                return '登入帳號密碼錯誤';
+                return false;
             }
             $result->close();
             $mysqli->close();
@@ -63,6 +69,7 @@ class Auth
             $_SESSION['sid'] = "";
             $_SESSION['username']="";
             $_SESSION['name']="";
+            return true;
         }
 
         public static function check(){  //檢查是否登入
@@ -77,6 +84,21 @@ class Auth
                 return false;
             }
         }
+
+        public static function checkusername($username){
+            $mysqli = Connect::conn();
+            $sql="select * from `member_data` where username='".$username."'";
+            echo $sql;
+            $result= $mysqli->query($sql);
+            if(($result->num_rows)==1){
+                return false;
+            }else{
+                return true;
+            }
+            $result->close();
+            $mysqli->close();
+        }
+
 
         public static function uploadPhoto($file,$name){
             $uploaddir = 'images/';
