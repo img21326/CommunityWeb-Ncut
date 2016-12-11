@@ -11,7 +11,7 @@ class Connect
 {
     public static function conn(){
         $config = parse_ini_file('conn.ini');
-        $mysqli = new mysqli("localhost", $config['username'], $config['password'], $config['dbname']);     //主機,帳號,密碼,資料庫
+        $mysqli = new mysqli("60.249.63.180", $config['username'], $config['password'], $config['dbname']);     //主機,帳號,密碼,資料庫
         if ($mysqli->connect_errno) {   //失敗時出現的錯誤狀況
             printf("Connect failed: %s\n", $mysqli->connect_error);
         }

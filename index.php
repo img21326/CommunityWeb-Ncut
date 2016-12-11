@@ -5,12 +5,7 @@
  * Date: 2016/12/7
  * Time: 下午 1:45
  */
-include ('Connect/Connect.php');
-include ('Controller/Gobal.php');
-include ('Controller/Auth.php');
-include ('Controller/Friend.php');
-include ('Controller/Post.php');
-//
+ //
 session_start();
 $s = Auth::check();
 if(!$s){
@@ -57,6 +52,7 @@ if(!$s){
             </div>
         </div>
         <div class="row marketing">
+
             <div class="col-lg-6">
                 <?php
                     $posts = Post::showPost(0,10);
