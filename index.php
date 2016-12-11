@@ -64,8 +64,8 @@ if(!$s){
             </label>
 
             <form method="post">
-                <input type="text"  name ="contact" placeholder="請輸入...">
-                <input type="submit" name="button" id="button" value="送出">
+                <textarea type="text"  name ="contact" class="form-control"  rows="3" placeholder="請輸入..."></textarea>
+                <input type="submit" name="button" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;">
                 <?php
                 if(isset($_POST['button'])){
                 $post = new Post();
@@ -73,6 +73,7 @@ if(!$s){
                 } //看看是否有新增貼文
                 ?>
             </form>
+            <hr>
         </div>
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7">
