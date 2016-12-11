@@ -63,16 +63,16 @@ if(!$s){
                 新增貼文:
             </label>
 
-
-            <input type="text"  name ="contact" placeholder="請輸入...">
-            <input type="submit" name="button" id="button" value="送出">
-            <?php
-            if(isset($_POST['button'])){
-            $post = new Post();
-            $post->createPost($_POST);
-            } //看看是否有新增貼文
-            ?>
-
+            <form method="post">
+                <input type="text"  name ="contact" placeholder="請輸入...">
+                <input type="submit" name="button" id="button" value="送出">
+                <?php
+                if(isset($_POST['button'])){
+                $post = new Post();
+                $post->createPost($_POST);
+                } //看看是否有新增貼文
+                ?>
+            </form>
 
 
 

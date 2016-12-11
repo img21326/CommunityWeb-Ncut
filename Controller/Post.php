@@ -22,9 +22,10 @@ class Post
 
     public function createPost($requset){   // 新增動態消息
         $contact = $requset['contact'];
-        $group = (isset( $requset['group'])) ? ( $requset['group']) : ("NULL");
+        $group = (isset( $requset['group'])) ? ( "'".$requset['group']."'") : ('NULL');
         $sql = "INSERT INTO post (post_id, SID, contact, post_time, group_id)";
-        $sql = $sql . " VALUES (NULL, '".$this->sid."', '".$contact."', CURRENT_TIMESTAMP, '".$group."');";
+        $sql = $sql . " VALUES (NULL, '".$this->sid."', '".$contact."', CURRENT_TIMESTAMP, ".$group.");";
+        echo $sql;
         if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
             printf("Errormessage: %s\n", $this->mysqli->error);
         }else{
