@@ -39,6 +39,7 @@ if(!$s){
         <div class="jumbotron">
             <div class="photo">
                 <img style="max-width: 400px;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;" src="<?php echo $Auth->photo ;?>">
+
             </div>
 
 
@@ -54,7 +55,39 @@ if(!$s){
             </div>
             <div class="col-md-2 ko" qw="訊息">
                 <img src="images/networking.png" style="max-width: 80px;">
+
             </div>
+        </div>
+        <div class="col-md-offset-3 col-lg-7">
+            <label>
+                新增貼文:
+            </label>
+
+
+            <input type="text"  name ="contact" placeholder="請輸入...">
+            <input type="submit" name="button" id="button" value="送出">
+            <?php
+            if(isset($_POST['button'])){
+            $post = new Post();
+            $post->createPost($_POST);
+            } //看看是否有新增貼文
+            ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7">
