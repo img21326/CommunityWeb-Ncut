@@ -57,28 +57,26 @@ if(!$s){
             </div>
         </div>
         <div class="row marketing">
-            <div class="col-md-offset-3 col-lg-7">
-             <?php
-                    $posts = Post::showPost(0,10);
-                    if($posts){
-                        foreach ($posts as $post){ ?>
-                            <h4><?php echo $post['name'];
-                                if(isset($post['gname'])){
-                                    echo " 在 ".$post['gname']." 社團的貼文";
-                                }else{
-                                    echo " 在 自己 的貼文";
-                                }
-                                ?></h4>
-                            <span><?php echo $post['post_time'];?></span>
-                            <p><?php echo $post['contact'];?></p>
-                            <hr>
-                <?php   }
-                    }
-
-
+            <div class="col-md-offset-3 col-lg-7" style="margin-top: 15px;">
+                <?php
+                    $cfriends = new Friend();
+                    $friends = $cfriends->showFriend();
+                    foreach ($friends as $friend){ ?>
+                        <div class="friend-box" onclick="location='member.php?id=<?php echo $friend['SID'];?>'">
+                            <div class="col-md-3">
+                                <img src="<?php echo $friend['photo'];?>">
+                            </div>
+                            <div class="col-md-9">
+                                <ul>
+                                    <li>姓名：<?php echo $friend['name'];?></li>
+                                    <li>電話：<?php echo $friend['phone'];?></li>
+                                    <li>email：<?php echo $friend['email'];?></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr>
+                <?php    }
                 ?>
-
-
             </div>
         </div>
         <footer class="footer">

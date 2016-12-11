@@ -25,3 +25,11 @@
     width: 400px;
     margin-bottom: 30px;
 }
+
+.friend-box{
+    overflow: hidden;
+}
+.friend-box:hover{
+    background: rgba(245, 245, 245, 0.36);
+    cursor: pointer;
+}

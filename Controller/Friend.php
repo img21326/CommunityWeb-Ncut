@@ -83,5 +83,23 @@ class Friend
             $reFriend[] = $friend['FID'];
         }
         return $reFriend;
+        unset($sql);
+        unset($reFriend);
+        unset($friends);
+    }
+
+    public function showFriend(){
+        $friends = $this->getFriend();
+        $emFriend = implode(',',$friends); //將取得的朋友（鎮列） 轉換成","排列
+        $sql = "SELECT * FROM `member_data` WHERE SID IN (".$emFriend.")";
+        $result = $this->mysqli->query($sql);
+        while ($row = $result->fetch_array()){
+            $sfriends[] = $row;
+        }
+        return $sfriends;
+        unset($sql);
+        unset($emFriend);
+        unset($result);
+        unset($sfriends);
     }
 }
