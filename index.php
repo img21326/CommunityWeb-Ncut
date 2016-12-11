@@ -87,6 +87,10 @@ if(!$s){
     </div>
     </body>
     <script>
+        <?php if(isset($_GET['meg'])){?>
+
+
+        <?php } ?>
         $('.ko').mouseenter(function() {
             layer.tips($(this).attr('qw'), this, {
                 tips: [3, '#78BA32']

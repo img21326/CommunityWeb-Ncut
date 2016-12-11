@@ -102,4 +102,5 @@ class Friend
         unset($result);
         unset($sfriends);
     }
+
 }

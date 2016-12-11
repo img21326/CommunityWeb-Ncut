@@ -62,6 +62,27 @@ class Post
         }
     }
 
+    public static function friendPost($sid,$start,$val){ //從哪裡開始,取幾筆
+        $mysqli = Connect::conn();
+        $Friend = new Friend();
+        $friends = $Friend->getFriend();
+        $emFriend = implode(',',$friends); //將取得的朋友（鎮列） 轉換成","排列
+        //$sql = "SELECT * FROM `post`,`member_data`,`group_data` WHERE member_data.SID = post.SID AND member_data.group_id = group_data.group_id AND post.SID in (".$emFriend.") ORDER by `post_time` DESC LIMIT ".$start.",".$val;
+        $sql = "SELECT * FROM `post` INNER JOIN `member_data` ON member_data.SID = post.SID LEFT JOIN `group_data` ON post.group_id = group_data.group_id";
+        $sql = $sql . " WHERE post.SID = ".$sid;
+        $sql = $sql . " ORDER BY `post_time` DESC LIMIT ".$start.",".$val;
+        $result= $mysqli->query($sql);
+        while ($row = $result->fetch_array()){
+            $posts[] = $row;
+        }
+        if(isset($posts)){
+            return $posts;
+        }else{
+            return false;
+        }
+    }
+
+
     public function deletePost($post_id){  //刪除
         $this->mysqli = Connect::conn();
         $check = self::check($post_id);
