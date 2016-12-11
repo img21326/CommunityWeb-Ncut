@@ -7,6 +7,11 @@
  */
  //
 session_start();
+include ('Connect/Connect.php');
+include ('Controller/Auth.php');
+include ('Controller/Gobal.php');
+include ('Controller/Friend.php');
+include ('Controller/Post.php');
 $s = Auth::check();
 if(!$s){
     return redirect('login.php?meg=nonlogin'); //沒有登入的話,跳到登入畫面
