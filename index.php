@@ -9,22 +9,9 @@ include ('Connect/Connect.php');
 include ('Controller/Gobal.php');
 include ('Controller/Auth.php');
 include ('Controller/Friend.php');
+include ('Controller/Post.php');
 //
 session_start();
-//$arr =[
-//    "username" => "user",
-//    "password" => "user",
-//];
-//$s = Auth::login($arr);
-
-//
-//$s = new Friend();
-//$q = $s->getFriend();
-//echo implode(',',$q);
-
-
-
-//檢查是否登入
 $s = Auth::check();
 if(!$s){
     return redirect('login.php?meg=nonlogin'); //沒有登入的話,跳到登入畫面
@@ -32,6 +19,7 @@ if(!$s){
     $Auth = new Auth();
 }
 ?>
+
 <html>
     <?php include_once ('head.php'); ?>
     <body>
@@ -70,12 +58,27 @@ if(!$s){
         </div>
         <div class="row marketing">
             <div class="col-lg-6">
+                <?php
+                    $posts = Post::showPost(0,10);
+                    if($posts){
+                        foreach ($posts as $post){ ?>
+                            <h4><?php echo $post['name'];
+                                if(isset($post['gname'])){
+                                    echo " 在 ".$post['gname']." 社團的貼文";
+                                }else{
+                                    echo " 在 自己 的貼文";
+                                }
+                                ?></h4>
+                            <span><?php echo $post['post_time'];?></span>
+                            <p><?php echo $post['contact'];?></p>
+                            <hr>
+                <?php   }
+                    }
+
+
+                ?>
                 <h4>Subheading</h4><p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-                <h4>Subheading</h4><p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-                <h4>Subheading</h4><p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p></div><div class="col-lg-6">
-                <h4>Subheading</h4><p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-                <h4>Subheading</h4><p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-                <h4>Subheading</h4><p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+
             </div>
         </div>
         <footer class="footer">
