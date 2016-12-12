@@ -70,6 +70,7 @@ if(!$s){
             <div class="col-md-offset-3 col-lg-7">
              <?php
                     $posts = Post::showPost(0,10);
+
                     if($posts){
                         foreach ($posts as $post){ ?>
                             <h4><?php echo $post['name'];
@@ -79,13 +80,24 @@ if(!$s){
                                     echo " 在 自己 的貼文";
                                 }
                                 ?>
-                                <div class="btn-group"  style="float: right;">
-                                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">修改</a></li>
-                                        <li><a href="#">刪除</a></li>
-                                    </ul>
-                                </div>
+
+
+                                <?php if (Post::check($post['post_id'])){ ?>
+                                    <div class="btn-group"  style="float: right;">
+                                        <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">修改</a></li>
+                                            <li><a onclick="deletecheck(<?php echo $post['post_id']; ?>)">刪除</a></li>
+                                        </ul>
+                                    </div>
+
+                                <?php } ?>
+
+
+
+
+
+
                             </h4>
                             <span><?php echo $post['post_time'];?></span>
                             <p><?php echo $post['contact'];?></p>
@@ -105,6 +117,16 @@ if(!$s){
     </div>
     </body>
     <script>
+
+        function deletecheck(post_id) {
+            layer.confirm('確定要刪除嗎？', {
+                btn: ['確定','取消'] //按钮
+            }, function(){
+                location='deletePost.php?id='+post_id;
+            });
+        }
+
+
         <?php if(isset($_GET['meg'])){?>
 
 
