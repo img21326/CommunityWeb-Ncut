@@ -79,10 +79,16 @@ class Friend
         while ($row = $result->fetch_array()){
             $friends[] = $row;
         }
-        foreach ($friends as $friend){
-            $reFriend[] = $friend['FID'];
+        if(!empty($friends)){
+            foreach ($friends as $friend){
+                $reFriend[] = $friend['FID'];
+            }
+            return $reFriend;
+        }else{
+            return false;
         }
-        return $reFriend;
+
+
         unset($sql);
         unset($reFriend);
         unset($friends);
