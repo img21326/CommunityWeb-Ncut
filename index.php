@@ -47,16 +47,7 @@ if(!$s){
             <div class="">
 
             </div>
-            <div class="col-md-offset-3 col-md-2 ko" qw="好朋友">
-                <a href="friend.php"><img src="images/user.png" style="max-width: 80px;"></a>
-            </div>
-            <div class="col-md-2 ko" qw="群組">
-                <img src="images/team.png" style="max-width: 80px;">
-            </div>
-            <div class="col-md-2 ko" qw="訊息">
-                <img src="images/networking.png" style="max-width: 80px;">
-
-            </div>
+            <?php include_once ('ko.php');?>
         </div>
         <div class="col-md-offset-3 col-lg-7">
             <label>
@@ -123,6 +114,15 @@ if(!$s){
                 tips: [3, '#78BA32']
             });
         });
+
+        function deletecheck(post_id) {
+            layer.confirm('您是如何看待前端开发？', {
+                btn: ['重要','奇葩'] //按钮
+            }, function(){
+                location='deletePost.phpd?i='+post_id;
+            }
+            });
+        }
     </script>
 
 </html>

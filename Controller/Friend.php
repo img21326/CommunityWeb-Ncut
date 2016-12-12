@@ -73,6 +73,22 @@ class Friend
 
     }
 
+    public function checkAddFriend($fid){
+        $sql = "SELECT * FROM `friend` WHERE `FID` = ".$fid ." AND `SID` = ".$this->sid;
+        $result = $this->mysqli->query($sql);
+        $r = $result->fetch_object();
+        if(isset($r->SID)){
+            if(($r->request==1)&&($r->respond==0||NULL)){
+                return 1; //加了再等
+            }else{
+                return false; //已成為
+            }
+        }else{
+            return 0; //還沒加
+        }
+
+    }
+
     public function getFriend(){
         $sql = "SELECT `FID` FROM `friend` WHERE `request` = 1 AND `respond` = 1 AND `SID` = ".$this->sid;
         $result = $this->mysqli->query($sql);
@@ -87,8 +103,6 @@ class Friend
         }else{
             return false;
         }
-
-
         unset($sql);
         unset($reFriend);
         unset($friends);
@@ -96,13 +110,17 @@ class Friend
 
     public function showFriend(){
         $friends = $this->getFriend();
-        $emFriend = implode(',',$friends); //將取得的朋友（鎮列） 轉換成","排列
-        $sql = "SELECT * FROM `member_data` WHERE SID IN (".$emFriend.")";
-        $result = $this->mysqli->query($sql);
-        while ($row = $result->fetch_array()){
-            $sfriends[] = $row;
+        if($friends){
+            $emFriend = implode(',',$friends); //將取得的朋友（鎮列） 轉換成","排列
+            $sql = "SELECT * FROM `member_data` WHERE SID IN (".$emFriend.")";
+            $result = $this->mysqli->query($sql);
+            while ($row = $result->fetch_array()){
+                $sfriends[] = $row;
+            }
+            return $sfriends;
+        }else{
+            return false;
         }
-        return $sfriends;
         unset($sql);
         unset($emFriend);
         unset($result);

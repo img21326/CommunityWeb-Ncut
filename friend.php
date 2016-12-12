@@ -46,22 +46,15 @@ if(!$s){
             <div class="">
 
             </div>
-            <div class="col-md-offset-3 col-md-2 ko" qw="好朋友">
-                <img src="images/user.png" style="max-width: 80px;">
-            </div>
-            <div class="col-md-2 ko" qw="群組">
-                <img src="images/team.png" style="max-width: 80px;">
-            </div>
-            <div class="col-md-2 ko" qw="訊息">
-                <img src="images/networking.png" style="max-width: 80px;">
-            </div>
+            <?php include_once ('ko.php');?>
         </div>
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7" style="margin-top: 15px;">
                 <?php
                     $cfriends = new Friend();
                     $friends = $cfriends->showFriend();
-                    foreach ($friends as $friend){ ?>
+                    if(!empty($friends)){
+                        foreach ($friends as $friend){ ?>
                         <div class="friend-box" onclick="location='member.php?id=<?php echo $friend['SID'];?>'">
                             <div class="col-md-3">
                                 <img src="<?php echo $friend['photo'];?>">
@@ -75,8 +68,12 @@ if(!$s){
                             </div>
                         </div>
                         <hr>
-                <?php    }
-                ?>
+                    <?php    }
+
+                    }else{?>
+
+                        <h3>您還沒有好友哦</h3>
+                <?php } ?>
             </div>
         </div>
         <footer class="footer">

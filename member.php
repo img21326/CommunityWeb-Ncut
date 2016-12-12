@@ -22,7 +22,10 @@ if(!$s) {
     $Auth = new Auth();
 }
 $member = new member($_GET['id']);
+$Friend = new Friend();
+$friends = $Friend->getFriend();
 
+$addedFriend = ($Friend->checkAddFriend($_GET['id']));
 ?>
 
 
@@ -52,36 +55,52 @@ $member = new member($_GET['id']);
         <div class="">
 
         </div>
+        <div class="col-md-1">
+            <?php if($addedFriend==0){ ?>
+                <img src="images/add-contact.png" style="max-width: 64px;">
+            <?php }elseif($addedFriend==1){ ?>
+                <img src="images/add-contact%20(1).png"  style="max-width: 64px;">
+            <?php }elseif($addedFriend==2){ ?>
+                <img src="images/friends-talking.png"  style="max-width: 64px;">
+            <?php } ?>
+        </div>
         <div class="col-md-offset-3 col-md-5">
             <ul>
                 <li>姓名：<?php echo $member->name ;?></li>
                 <li>電話：<?php echo $member->phone ;?></li>
                 <li>email：<?php echo $member->email ;?></li>
             </ul>
+
         </div>
     </div>
     <div class="row marketing">
         <div class="col-md-offset-3 col-lg-7">
             <?php
-            $posts = Post::friendPost($_GET['id'],0,10);
-            if($posts){
-                foreach ($posts as $post){ ?>
-                    <h4><?php echo $post['name'];
-                        if(isset($post['gname'])){
-                            echo " 在 ".$post['gname']." 社團的貼文";
-                        }else{
-                            echo " 在 自己 的貼文";
-                        }
-                        ?></h4>
-                    <span><?php echo $post['post_time'];?></span>
-                    <p><?php echo $post['contact'];?></p>
-                    <hr>
-                <?php   }
+            if($friends){ //先看是否有朋友
+                if(in_array($_GET['id'],$friends)){   //是否成為朋友
+                    $posts = Post::friendPost($_GET['id'],0,10);
+                    if($posts){
+                        foreach ($posts as $post){ ?>
+                            <h4><?php echo $post['name'];
+                                if(isset($post['gname'])){
+                                    echo " 在 ".$post['gname']." 社團的貼文";
+                                }else{
+                                    echo " 在 自己 的貼文";
+                                }
+                                ?></h4>
+                            <span><?php echo $post['post_time'];?></span>
+                            <p><?php echo $post['contact'];?></p>
+                            <hr>
+                        <?php   }
+                    }else{
+                        echo "<h2>本人未發任何文章</h2>";
+                    }
+                }else{
+                    echo "<h2>你們還沒有成為好友哦!</h2>";
+                }
             }else{
-                echo "<h2>本人未發任何文章</h2>";
+                echo "<h2>你們還沒有成為好友哦!</h2>";
             }
-
-
             ?>
 
 
