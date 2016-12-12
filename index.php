@@ -92,12 +92,6 @@ if(!$s){
                                     </div>
 
                                 <?php } ?>
-
-
-
-
-
-
                             </h4>
                             <span><?php echo $post['post_time'];?></span>
                             <p><?php echo $post['contact'];?></p>
