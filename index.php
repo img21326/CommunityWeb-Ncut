@@ -111,34 +111,20 @@ if(!$s){
     </div>
     </body>
     <script>
-
+        <?php include_once ('script.php');?>
         function deletecheck(post_id) {
             layer.confirm('確定要刪除嗎？', {
                 btn: ['確定','取消'] //按钮
             }, function(){
-                location='deletePost.php?id='+post_id;
+                location='deletePost.php?id='+post_id+"&page=index.php";
             });
         }
-
-
-        <?php if(isset($_GET['meg'])){?>
-
-
-        <?php } ?>
         $('.ko').mouseenter(function() {
             layer.tips($(this).attr('qw'), this, {
                 tips: [3, '#78BA32']
             });
         });
 
-        function deletecheck(post_id) {
-            layer.confirm('您是如何看待前端开发？', {
-                btn: ['重要','奇葩'] //按钮
-            }, function(){
-                location='deletePost.phpd?i='+post_id;
-            }
-            });
-        }
     </script>
 
 </html>

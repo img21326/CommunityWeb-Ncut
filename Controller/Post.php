@@ -87,7 +87,7 @@ class Post
     }
 
 
-    public function deletePost($post_id){  //刪除
+    public function deletePost($post_id,$page){  //刪除
         $this->mysqli = Connect::conn();
         $check = self::check($post_id);
         if($check){
@@ -95,10 +95,10 @@ class Post
             if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
                 printf("Errormessage: %s\n", $this->mysqli->error);
             }else {
-                return "成功";
+                return redirect($page."?meg=deletefinish");
             }
         }else{
-            return '權限不符';
+            return redirect($page."?meg=deleterror");
         }
 
         unset($sqlsid);

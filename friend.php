@@ -18,6 +18,18 @@ if(!$s){
 }else{
     $Auth = new Auth();
 }
+$Friend = new Friend();
+if(isset($_GET['do'])){
+    switch ($_GET['do']){
+        case 'resaddFriend':
+            $q = $Friend->resaddFriend($_GET['id'],$_GET['res']);
+            if($q){
+                //return redirect($_SERVER['PHP_SELF']);
+            }
+            break;
+    }
+
+}
 ?>
 
 <html>
@@ -50,14 +62,42 @@ if(!$s){
         </div>
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7" style="margin-top: 15px;">
+
                 <?php
                     $cfriends = new Friend();
+                    $addmefriends = $cfriends->checkInvideFriend();
+                    if(!empty($addmefriends)) {  //顯示+的朋友
+                        echo "<h3>未確認好友</h3>";
+                        foreach ($addmefriends as $addmefriend){ ?>
+
+                            <div class="friend-box">
+                                <div class="col-md-3">
+                                    <img src="<?php echo $addmefriend['photo'];?>" style="max-width: 60px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <ul>
+                                        <li>姓名：<?php echo $addmefriend['name'];?></li>
+                                        <li>電話：<?php echo $addmefriend['phone'];?></li>
+                                        <li>email：<?php echo $addmefriend['email'];?></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-success" onclick="location='friend.php?do=resaddFriend&id=<?php echo $addmefriend['SID'];?>&res=1'">成為好友</button>
+                                    <button class="btn btn-warning" onclick="location='friend.php?do=resaddFriend&id=<?php echo $addmefriend['SID'];?>&res=0'">拒絕好友</button>
+                                </div>
+                            </div>
+                            <hr>
+                            <h3>您的好友</h3>
+                            <hr>
+
+                    <?php }
+                    }
                     $friends = $cfriends->showFriend();
-                    if(!empty($friends)){
+                    if(!empty($friends)){  //顯示好朋友
                         foreach ($friends as $friend){ ?>
                         <div class="friend-box" onclick="location='member.php?id=<?php echo $friend['SID'];?>'">
                             <div class="col-md-3">
-                                <img src="<?php echo $friend['photo'];?>">
+                                <img src="<?php echo $friend['photo'];?>" style="max-width: 60px;">
                             </div>
                             <div class="col-md-9">
                                 <ul>

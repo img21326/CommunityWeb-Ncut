@@ -18,6 +18,8 @@ if(!$s) {
     return redirect('login.php?meg=nonlogin'); //沒有登入的話,跳到登入畫面
 }elseif (!isset($_GET['id'])){
     return redirect('index.php');
+}elseif ($_GET['id']==$_SESSION['sid']){
+    return redirect('index.php'); //看自己的資料則回到INDEX
 }else{
     $Auth = new Auth();
 }
@@ -26,6 +28,23 @@ $Friend = new Friend();
 $friends = $Friend->getFriend();
 
 $addedFriend = ($Friend->checkAddFriend($_GET['id']));
+if(isset($_GET['do'])){
+    switch ($_GET['do']){
+        case 'addfriend':
+            $q = $Friend->addFriend($_GET['id']);
+            if($q){
+                return redirect($_SERVER['PHP_SELF']."?id=".$_GET['id']);
+            }
+            break;
+        case 'resetfriend':
+            $q = $Friend->resetFriend($_GET['id']);
+            if($q){
+                return redirect($_SERVER['PHP_SELF']."?id=".$_GET['id']);
+            }
+            break;
+    }
+
+}
 ?>
 
 
@@ -57,11 +76,13 @@ $addedFriend = ($Friend->checkAddFriend($_GET['id']));
         </div>
         <div class="col-md-1">
             <?php if($addedFriend==0){ ?>
-                <img src="images/add-contact.png" style="max-width: 64px;">
+                <img src="images/add-contact.png" style="max-width: 64px;" class="ko addfriend" qw="加入好友">
             <?php }elseif($addedFriend==1){ ?>
-                <img src="images/add-contact%20(1).png"  style="max-width: 64px;">
+                <img src="images/add-contact%20(1).png"  style="max-width: 64px;" class="ko resetfriend" qw="好友確認中">
             <?php }elseif($addedFriend==2){ ?>
-                <img src="images/friends-talking.png"  style="max-width: 64px;">
+                <img src="images/friends-talking.png"  style="max-width: 64px;" class="ko" qw="已成為好友">
+            <?php }elseif($addedFriend==3){ ?>
+                <img src="images/friends-talking.png"  style="max-width: 64px;" class="ko addfriend" qw="您還沒回復哦">
             <?php } ?>
         </div>
         <div class="col-md-offset-3 col-md-5">
@@ -116,6 +137,14 @@ $addedFriend = ($Friend->checkAddFriend($_GET['id']));
         layer.tips($(this).attr('qw'), this, {
             tips: [3, '#78BA32']
         });
+    });
+
+    $('.addfriend').click(function () {
+       location="member.php?do=addfriend&id=<?php echo $_GET['id'];?>";
+    });
+
+    $('.resetfriend').click(function () {
+        location="member.php?do=resetfriend&id=<?php echo $_GET['id'];?>";
     });
 </script>
 
