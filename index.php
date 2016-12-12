@@ -87,7 +87,15 @@ if(!$s){
                                 }else{
                                     echo " 在 自己 的貼文";
                                 }
-                                ?></h4>
+                                ?>
+                                <div class="btn-group"  style="float: right;">
+                                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">修改</a></li>
+                                        <li><a href="#">刪除</a></li>
+                                    </ul>
+                                </div>
+                            </h4>
                             <span><?php echo $post['post_time'];?></span>
                             <p><?php echo $post['contact'];?></p>
                             <hr>
