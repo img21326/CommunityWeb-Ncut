@@ -170,4 +170,38 @@ class Friend
         unset($sfriends);
     }
 
+    public function find($request){
+        if(isset($request)){
+            $find = $request;
+            $sql = "SELECT * FROM `member_data` ";
+            $sql .= "WHERE  `name` LIKE '%".$find['search']."%'";
+            $sql .= "OR  `email` LIKE '%".$find['search']."%'";
+            $result = $this->mysqli->query($sql);
+            if($result->fetch_row()>0){
+                $a = array();
+                while ($row = $result->fetch_array()){
+                    $b = [
+                        'sid' => $row['SID'],
+                        'name' => $row['name'],
+                        'photo' => $row['photo'],
+                    ];
+                    array_push($a,$b);
+                }
+            }else{
+                $a = [
+                    'sid' => 'null',
+                ];
+            }
+            return $a;
+        }else{
+            return false;
+        }
+
+        unset($find);
+        unset($sql);
+        unset($result);
+        unset($findre);
+
+    }
+
 }

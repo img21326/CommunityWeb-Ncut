@@ -27,16 +27,24 @@ if(!$s){
         <div class="header">
             <div class="input-group right" style="width: 20%;">
                 <span class="input-group-addon">@</span>
-                <input type="text" class="form-control" placeholder="Username">
+                <input type="text" class="form-control" placeholder="名子或信箱" id="searchname">
+            </div>
+            <div class="search-friend-result right">
+                <img id="search-ajax" src="images/ajax.gif" style="max-height: 16px;margin-left: 30%;display: none;">
+                <ul class="list-group" style="display: none;">
+
+                </ul>
             </div>
             <nav>
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a href="logout.php">登出</a></li>
                 </ul>
             </nav>
+
             <h3 class="text-muted">資管人聯絡簿</h3>
+
         </div>
-        <div class="jumbotron">
+        <div class="jumbotron" style="width: 900px;">
             <div class="photo">
                 <img style="max-width: 400px;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;" src="<?php echo $Auth->photo ;?>">
 
@@ -105,6 +113,7 @@ if(!$s){
 
             </div>
         </div>
+
         <footer class="footer">
             <?php include_once ('footer.php'); ?>
         </footer>
@@ -123,6 +132,37 @@ if(!$s){
             layer.tips($(this).attr('qw'), this, {
                 tips: [3, '#78BA32']
             });
+        });
+
+        $('#searchname').change(function () {
+            $.ajax({
+                url: 'searchFriend.php',
+                type:"POST",
+                data: { search:this.value},
+                dataType: "json",
+                beforeSend: function() {
+                    $('#search-ajax').show();
+                },
+                complete: function(){
+                    $('#search-ajax').hide();
+                },
+                success: function(data){
+                    if(data.sid!="null"){
+                        $(".search-friend-result").html("");
+                        $.each(data, function(i, item) {
+                            var html = "<li class=\"list-group-item\"><a href=\"member.php?id="+item.sid+"\">"+item.name+"<\/a><\/li>";
+                            $(".search-friend-result").append(html);
+                        });
+                        $(".search-friend-result .list-group").fadeIn();
+                    }else{
+                        $(".search-friend-result").html("");
+                        $(".search-friend-result .list-group").fadeOut();
+                    }
+                }});
+        });
+
+        $('#searchname').blur(function () {
+            $(".search-friend-result .list-group").fadeOut();
         });
 
     </script>
