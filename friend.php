@@ -8,7 +8,7 @@
  //
 session_start();
 include ('Connect/Connect.php');
-include ('Controller/Auth.php');
+include('Controller/Auth.php');
 include ('Controller/Gobal.php');
 include ('Controller/Friend.php');
 include ('Controller/Post.php');
@@ -36,30 +36,7 @@ if(isset($_GET['do'])){
     <?php include_once ('head.php'); ?>
     <body>
     <div class="container">
-        <div class="header">
-            <div class="input-group right" style="width: 20%;">
-                <span class="input-group-addon">@</span>
-                <input type="text" class="form-control" placeholder="Username">
-            </div>
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation"><a href="logout.php">登出</a></li>
-                </ul>
-            </nav>
-            <h3 class="text-muted">資管人聯絡簿</h3>
-        </div>
-        <div class="jumbotron">
-            <div class="photo">
-                <img style="max-width: 400px;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;" src="<?php echo $Auth->photo ;?>">
-            </div>
-
-
-            <div class="clear"></div>
-            <div class="">
-
-            </div>
-            <?php include_once ('ko.php');?>
-        </div>
+        <?php include_once ("header.php");?>
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7" style="margin-top: 15px;">
 
@@ -122,6 +99,7 @@ if(isset($_GET['do'])){
     </div>
     </body>
     <script>
+        <?php include_once ('script.php');?>
         $('.ko').mouseenter(function() {
             layer.tips($(this).attr('qw'), this, {
                 tips: [3, '#78BA32']

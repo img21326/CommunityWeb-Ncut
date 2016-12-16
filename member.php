@@ -8,7 +8,7 @@
 //
 session_start();
 include ('Connect/Connect.php');
-include ('Controller/Auth.php');
+include('Controller/Auth.php');
 include ('Controller/Gobal.php');
 include ('Controller/Friend.php');
 include ('Controller/Post.php');
@@ -55,14 +55,20 @@ if(isset($_GET['do'])){
     <div class="header">
         <div class="input-group right" style="width: 20%;">
             <span class="input-group-addon">@</span>
-            <input type="text" class="form-control" placeholder="Username">
+            <input type="text" class="form-control" placeholder="名子或信箱" id="searchname">
+        </div>
+        <div class="search-friend-result right">
+            <img id="search-ajax" src="images/ajax.gif" style="max-height: 16px;margin-left: 30%;display: none;">
+            <ul class="list-group" style="display: none;">
+
+            </ul>
         </div>
         <nav>
             <ul class="nav nav-pills pull-right">
                 <li role="presentation"><a href="logout.php">登出</a></li>
             </ul>
         </nav>
-        <h3 class="text-muted">資管人聯絡簿</h3>
+        <h3 class="text-muted"><a href="/">資管人聯絡簿</a></h3>
     </div>
     <div class="jumbotron">
         <div class="photo">
@@ -133,6 +139,7 @@ if(isset($_GET['do'])){
 </div>
 </body>
 <script>
+    <?php include_once ('script.php');?>
     $('.ko').mouseenter(function() {
         layer.tips($(this).attr('qw'), this, {
             tips: [3, '#78BA32']

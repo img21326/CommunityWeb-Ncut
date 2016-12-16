@@ -8,7 +8,7 @@
 session_start();
 include ('Connect/Connect.php');
 include ('Controller/Gobal.php');
-include ('Controller/Auth.php');
+include('Controller/Auth.php');
 $s = Auth::check();
 if(!$s){
     return redirect('login.php'); //沒有登入的話,跳到登入畫面

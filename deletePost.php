@@ -7,7 +7,7 @@
  */
 include ('Connect/Connect.php');
 include ('Controller/Gobal.php');
-include ('Controller/Auth.php');
+include('Controller/Auth.php');
 include ('Controller/Post.php');
 session_start();
 $post = new Post();

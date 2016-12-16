@@ -6,7 +6,6 @@
  * Date: 2016/12/7
  * Time: 下午 1:19
  */
-
 class Auth
     {
 

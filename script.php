@@ -32,3 +32,34 @@
     <?php } ?>
 
 <?php } ?>
+
+$('#searchname').change(function () {
+$.ajax({
+url: 'searchFriend.php',
+type:"POST",
+data: { search:this.value},
+dataType: "json",
+beforeSend: function() {
+$('#search-ajax').show();
+},
+complete: function(){
+$('#search-ajax').hide();
+},
+success: function(data){
+if(data.sid!="null"){
+$(".search-friend-result").html("");
+$.each(data, function(i, item) {
+var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'><a href=\"member.php?id="+item.sid+"\">"+item.name+"<\/a><\/li>";
+        $(".search-friend-result").append(html);
+        });
+        $(".search-friend-result .list-group").fadeIn();
+        }else{
+        $(".search-friend-result").html("");
+        $(".search-friend-result .list-group").fadeOut();
+        }
+        }});
+        });
+
+        $('#searchname').blur(function () {
+        $(".search-friend-result .list-group").fadeOut();
+        });

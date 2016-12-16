@@ -7,7 +7,7 @@
  */
 session_start();
 include ('Connect/Connect.php');
-include ('Controller/Auth.php');
+include('Controller/Auth.php');
 include ('Controller/Gobal.php');
 include ('Controller/Friend.php');
 $s = Auth::check();
