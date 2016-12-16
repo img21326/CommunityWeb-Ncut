@@ -33,9 +33,9 @@ class Auth
                 return redirect('register.php?meg=usernamerror');
             }
             $photopath = self::uploadPhoto($_FILES['photo'],$request['username']);
-            $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `FID`, `group_id`, `sday`, `status`) VALUES (NULL, '";
+            $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `sday`, `status`) VALUES (NULL, '";
             $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."','".$photopath."',";
-            $sql=$sql."NULL, NULL, CURRENT_TIMESTAMP,1)";
+            $sql=$sql." CURRENT_TIMESTAMP,1)";
             echo $sql;
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息
                printf("Errormessage: %s\n", $mysqli->error);
