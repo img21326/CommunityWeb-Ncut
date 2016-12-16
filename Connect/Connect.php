@@ -15,6 +15,7 @@ class Connect
         if ($mysqli->connect_errno) {   //失敗時出現的錯誤狀況
             printf("Connect failed: %s\n", $mysqli->connect_error);
         }
+        $mysqli->set_charset("utf8");
         return $mysqli;
     }
 //  使用sql時將 $mysqli->query

@@ -82,10 +82,7 @@ if(isset($_POST['button_edit'])){
 
 
                 ?>
-<form method="post">
-    <textarea type="text"  name ="contact" class="form-control"  rows="3"></textarea>
-    <input type="submit" name="button_edit" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;">
-</form>
+
 
             </div>
         </div>

@@ -40,7 +40,7 @@ class Auth
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息
                printf("Errormessage: %s\n", $mysqli->error);
             }else{
-                return redirect('login.php?meg=register');
+                return true;
             }
             unset($sql);
             $mysqli->close();
@@ -49,6 +49,7 @@ class Auth
         public static function login($request){    //登入
             $mysqli = Connect::conn();
             $sql="select * from `member_data` where username='".$request['username']."' and password='".md5($request['password'])."'";
+            echo $sql;
             $result= $mysqli->query($sql);
             if(($result->num_rows)==1){
                 $user = $result->fetch_object();

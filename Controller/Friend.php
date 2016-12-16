@@ -177,7 +177,8 @@ class Friend
             $sql .= "WHERE  `name` LIKE '%".$find['search']."%'";
             $sql .= "OR  `email` LIKE '%".$find['search']."%'";
             $result = $this->mysqli->query($sql);
-            if($result->fetch_row()>0){
+            $numrow = $result->num_rows;
+            if($numrow>0){ //搜尋到資料
                 $a = array();
                 while ($row = $result->fetch_array()){
                     $b = [
