@@ -64,8 +64,7 @@ if(isset($_GET['do'])){
                                 </div>
                             </div>
                             <hr>
-                            <h3>您的好友</h3>
-                            <hr>
+
 
                     <?php }
                     }

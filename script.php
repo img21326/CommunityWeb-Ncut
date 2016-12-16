@@ -32,7 +32,7 @@
     <?php } ?>
 
 <?php } ?>
-
+/*  好友欄位AJAX */
 $('#searchname').change(function () {
 $.ajax({
 url: 'searchFriend.php',
@@ -63,3 +63,20 @@ var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='mar
         $('#searchname').blur(function () {
         $(".search-friend-result .list-group").fadeOut();
         });
+/*  end-好友欄位AJAX */
+        /* 圖標TIP */
+        $('.ko').mouseenter(function() {
+        layer.tips($(this).attr('qw'), this, {
+        tips: [3, '#78BA32']
+        });
+        });
+        /* end圖標TIP */
+<?php
+$friend = new Friend();
+$resu = $friend->checkInvideFriend();
+if($resu){ ?>
+        layer.tips('<?php echo count($resu);?>', '.goodfriend', {
+        tips: [4, 'rgba(255, 10, 10, 0.75)']
+        });
+<?php } ?>
+

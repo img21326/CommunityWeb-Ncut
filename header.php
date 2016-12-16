@@ -15,7 +15,7 @@
         </ul>
     </nav>
 
-    <h3 class="text-muted"><a href="/">資管人聯絡簿</a></h3>
+    <h3 class="text-muted"><a href="index.php">資管人聯絡簿</a></h3>
 
 </div>
 <div class="jumbotron" style="width: 900px;">

@@ -53,11 +53,11 @@ if(isset($_POST['button_edit'])){
                     if($posts){
                         foreach ($posts as $post){ ?>
                             <div class="postbox" id="post-<?php echo $post['post_id'];?>">
-                                <h4><?php echo $post['name'];
+                                <h4><img src="<?php echo $post['photo'];?>" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'><?php echo $post['name'];
                                     if(isset($post['gname'])){
-                                        echo " 在 ".$post['gname']." 社團的貼文";
+                                        echo "►".$post['gname']." 社團的貼文";
                                     }else{
-                                        echo " 在 自己 的貼文";
+//                                        echo " 在 自己 的貼文";
                                     }
                                     ?>
 
@@ -105,11 +105,6 @@ if(isset($_POST['button_edit'])){
             var html = "<form method=\"post\"><input type='hidden' name='post_id' value='"+post_id+"'><textarea type=\"text\"  name =\"contact\" class=\"form-control\"  rows=\"3\">"+$("#post-"+post_id+" p").html()+"</textarea><input type=\"submit\" name=\"button_edit\" id=\"button\" value=\"送出\" class=\"btn btn-default\" style=\"margin-top: 5px;\"></form>"
             $("#post-"+post_id+" p").html(html);
         }
-        $('.ko').mouseenter(function() {
-            layer.tips($(this).attr('qw'), this, {
-                tips: [3, '#78BA32']
-            });
-        });
 
 
 
