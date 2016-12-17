@@ -43,52 +43,57 @@ if(isset($_GET['do'])){
                 <?php
                     $cfriends = new Friend();
                     $addmefriends = $cfriends->checkInvideFriend();
-                    if(!empty($addmefriends)) {  //顯示+的朋友
-                        echo "<h3>未確認好友</h3>";
-                        foreach ($addmefriends as $addmefriend){ ?>
-
-                            <div class="friend-box">
-                                <div class="col-md-3">
-                                    <img src="<?php echo $addmefriend['photo'];?>" style="max-width: 60px;">
-                                </div>
-                                <div class="col-md-6">
-                                    <ul>
-                                        <li>姓名：<?php echo $addmefriend['name'];?></li>
-                                        <li>電話：<?php echo $addmefriend['phone'];?></li>
-                                        <li>email：<?php echo $addmefriend['email'];?></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3">
-                                    <button class="btn btn-success" onclick="location='friend.php?do=resaddFriend&id=<?php echo $addmefriend['SID'];?>&res=1'">成為好友</button>
-                                    <button class="btn btn-warning" onclick="location='friend.php?do=resaddFriend&id=<?php echo $addmefriend['SID'];?>&res=0'">拒絕好友</button>
-                                </div>
-                            </div>
-                            <hr>
-
-
-                    <?php }
-                    }
-                    $friends = $cfriends->showFriend();
-                    if(!empty($friends)){  //顯示好朋友
-                        foreach ($friends as $friend){ ?>
-                        <div class="friend-box" onclick="location='member.php?id=<?php echo $friend['SID'];?>'">
-                            <div class="col-md-3">
-                                <img src="<?php echo $friend['photo'];?>" style="max-width: 60px;">
-                            </div>
-                            <div class="col-md-9">
-                                <ul>
-                                    <li>姓名：<?php echo $friend['name'];?></li>
-                                    <li>電話：<?php echo $friend['phone'];?></li>
-                                    <li>email：<?php echo $friend['email'];?></li>
-                                </ul>
-                            </div>
+                    if(!empty($addmefriends)) {  //顯示+的朋友 ?>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">未確認的好朋友</div>
+                            <ul class="list-group">
+                            <?php   foreach ($addmefriends as $addmefriend){ ?>
+                                <li class="list-group-item">
+                                    <div class="friend-box">
+                                        <div class="col-md-3">
+                                            <img src="<?php echo $addmefriend['photo'];?>" style="max-width: 60px;">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li>姓名：<?php echo $addmefriend['name'];?></li>
+                                                <li>電話：<?php echo $addmefriend['phone'];?></li>
+                                                <li>email：<?php echo $addmefriend['email'];?></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-success" onclick="location='friend.php?do=resaddFriend&id=<?php echo $addmefriend['SID'];?>&res=1'">成為好友</button>
+                                            <button class="btn btn-warning" onclick="location='friend.php?do=resaddFriend&id=<?php echo $addmefriend['SID'];?>&res=0'">拒絕好友</button>
+                                        </div>
+                                    </div>
+                                </li>
+                    <?php } ?>
+                            </ul>
                         </div>
-                        <hr>
-                    <?php    }
+                    <?php }
+                    $friends = $cfriends->showFriend();
+                    if(!empty($friends)){  //顯示好朋友?>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">你的好朋友</div>
+                            <ul class="list-group">
+                                <?php    foreach ($friends as $friend){ ?>
+                                    <li class="list-group-item">
+                                        <div class="friend-box" onclick="location='member.php?id=<?php echo $friend['SID'];?>'">
+                                            <div class="col-md-3">
+                                                <img src="<?php echo $friend['photo'];?>" style="max-width: 60px;">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <ul>
+                                                    <li>姓名：<?php echo $friend['name'];?></li>
+                                                    <li>電話：<?php echo $friend['phone'];?></li>
+                                                    <li>email：<?php echo $friend['email'];?></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <?php    }
+                    }else{ ?>
 
-                    }else{?>
-
-                        <h3>您還沒有好友哦</h3>
+                                    <h3>您還沒有好友哦</h3>
                 <?php } ?>
             </div>
         </div>
@@ -99,11 +104,14 @@ if(isset($_GET['do'])){
     </body>
     <script>
         <?php include_once ('script.php');?>
-        $('.ko').mouseenter(function() {
-            layer.tips($(this).attr('qw'), this, {
-                tips: [3, '#78BA32']
-            });
+        <?php
+        $friend = new Friend();
+        $resu = $friend->checkInvideFriend();
+        if($resu){ ?>
+        layer.tips('<?php echo count($resu);?>', '.goodfriend', {
+            tips: [4, 'rgba(255, 10, 10, 0.75)']
         });
+        <?php } ?>
     </script>
 
 </html>

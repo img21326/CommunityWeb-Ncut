@@ -18,7 +18,7 @@ if($s){
         if($post){
             return redirect('index.php');
         }else{
-           // return redirect('login.php?meg=error');
+            return redirect('login.php?meg=error');
         }
     }
 }

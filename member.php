@@ -140,11 +140,14 @@ if(isset($_GET['do'])){
 </body>
 <script>
     <?php include_once ('script.php');?>
-    $('.ko').mouseenter(function() {
-        layer.tips($(this).attr('qw'), this, {
-            tips: [3, '#78BA32']
-        });
+    <?php
+    $friend = new Friend();
+    $resu = $friend->checkInvideFriend();
+    if($resu){ ?>
+    layer.tips('<?php echo count($resu);?>', '.goodfriend', {
+        tips: [4, 'rgba(255, 10, 10, 0.75)']
     });
+    <?php } ?>
 
     $('.addfriend').click(function () {
        location="member.php?do=addfriend&id=<?php echo $_GET['id'];?>";

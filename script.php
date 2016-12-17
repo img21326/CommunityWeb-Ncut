@@ -25,7 +25,12 @@
         anim: 6
         });
     <?php }elseif($_GET['meg']=='deleterror'){ ?>
-        layer.msg('出現問題！', {
+        layer.msg('刪除出現問題！', {
+        offset: 't',
+        anim: 6
+        });
+    <?php }elseif($_GET['meg']=='gnameused'){ ?>
+        layer.msg('群組名稱以被使用！', {
         offset: 't',
         anim: 6
         });
@@ -71,12 +76,5 @@ var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='mar
         });
         });
         /* end圖標TIP */
-<?php
-$friend = new Friend();
-$resu = $friend->checkInvideFriend();
-if($resu){ ?>
-        layer.tips('<?php echo count($resu);?>', '.goodfriend', {
-        tips: [4, 'rgba(255, 10, 10, 0.75)']
-        });
-<?php } ?>
+
 

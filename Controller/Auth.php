@@ -36,7 +36,6 @@ class Auth
             $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `sday`, `status`) VALUES (NULL, '";
             $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."','".$photopath."',";
             $sql=$sql." CURRENT_TIMESTAMP,1)";
-            echo $sql;
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息
                printf("Errormessage: %s\n", $mysqli->error);
             }else{
@@ -101,7 +100,7 @@ class Auth
 
 
         public static function uploadPhoto($file,$name){
-            $uploaddir = 'images/';
+            $uploaddir = 'images/users/';
             $uploadfile = $uploaddir . basename(rand(1111, 9999).$file['name']);
             if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
                 return $uploadfile;

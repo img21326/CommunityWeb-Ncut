@@ -22,7 +22,7 @@ class Friend
         if(Auth::check()==true){
             $this->sid = $_SESSION['sid'];
         }else{
-            //return redirect('login.php');
+            return redirect('login.php');
         }
         $this->mysqli=Connect::conn();
     }
@@ -197,7 +197,8 @@ class Friend
         }else{
             return false;
         }
-
+        unset($a);
+        unset($b);
         unset($find);
         unset($sql);
         unset($result);
