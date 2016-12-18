@@ -79,7 +79,7 @@ if(isset($_GET['do'])){
                                     <li class="list-group-item">
                                         <div class="friend-box" onclick="location='member.php?id=<?php echo $friend['SID'];?>'">
                                             <div class="col-md-3">
-                                                <img src="<?php echo $friend['photo'];?>" style="max-width: 60px;">
+                                                <img class="img-thumbnail" src="<?php echo $friend['photo'];?>" style="max-width: 60px;">
                                             </div>
                                             <div class="col-md-9">
                                                 <ul>

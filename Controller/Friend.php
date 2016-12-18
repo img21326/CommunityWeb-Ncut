@@ -127,7 +127,7 @@ class Friend
 
     }
 
-    public function getFriend(){
+    public function getFriend(){   //單純轉換微陣列
         $sql = "SELECT `FID` FROM `friend` WHERE (`request` = 1 AND `respond` = 1 AND `SID` = ".$this->sid.")"; //我家的好友
         $result = $this->mysqli->query($sql);
         while ($row = $result->fetch_array()){
@@ -151,7 +151,7 @@ class Friend
         unset($friends);
     }
 
-    public function showFriend(){
+    public function showFriend(){  //將取得的朋友轉換為字串
         $friends = $this->getFriend();
         if($friends){
             $emFriend = implode(',',$friends); //將取得的朋友（鎮列） 轉換成","排列
@@ -178,13 +178,28 @@ class Friend
             $sql .= "OR  `email` LIKE '%".$find['search']."%'";
             $result = $this->mysqli->query($sql);
             $numrow = $result->num_rows;
+            $sql_group = "SELECT * FROM `group_data` WHERE `gname` LIKE '%".$find['search']."%'";
+            $result_g = $this->mysqli->query($sql_group);
+            $numrow_g = $result_g->num_rows;
+            $a = array();
             if($numrow>0){ //搜尋到資料
-                $a = array();
                 while ($row = $result->fetch_array()){
                     $b = [
                         'sid' => $row['SID'],
                         'name' => $row['name'],
                         'photo' => $row['photo'],
+                        'class' => 'member',
+                    ];
+                    array_push($a,$b);
+                }
+            }elseif($numrow_g>0) {
+                while ($row_g = $result_g->fetch_array()){
+                    //var_dump($row_g);
+                    $b = [
+                        'sid' => $row_g['group_id'],
+                        'name' => $row_g['gname'],
+                        'photo' => $row_g['gphoto'],
+                        'class' => 'group_detail',
                     ];
                     array_push($a,$b);
                 }

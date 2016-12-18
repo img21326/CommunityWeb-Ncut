@@ -45,7 +45,10 @@ class Group
         unset($photopath);
     }
 
-    public function delelte(){
+    public function delelte($id = null){
+        if(is_null($this->group_id)){
+            $this->group_id = $id;
+        }
         if(isset($this->group_id)){
             $sql = "DELETE FROM `group_data` WHERE `group_id` = ".$this->group_id;
             if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息
@@ -67,10 +70,14 @@ class Group
         unset($sql);
     }
 
-    public function edit($request){
+    public function edit($request,$id = null){
+        if(is_null($this->group_id)){
+            $this->group_id = $id;
+        }
+        echo $this->group_id;
         if(isset($this->group_id)){
             //UPDATE  `group1`.`group_data` SET  `gname` =  'test1' WHERE  `group_data`.`group_id` =1 LIMIT 1 ;
-            $sql = "UPDATE  `group1`.`group_data` SET  `gname` =  '".$request['gname'];
+            $sql = "UPDATE  `group1`.`group_data` SET  `gname` =  '".$request['gname']."'";
             if(isset($request['gphoto'])){
                 $photopath = $this->uploadPhoto($_FILES['photo'],$this->sid);
                 $sql .= " `gphoto` = '" .$photopath."'";
@@ -80,14 +87,14 @@ class Group
                 printf("Errormessage: %s\n", $this->mysqli->error);
             }else{
                 $ret = [
-                    status => true,
-                    msg => "",
+                    'status' => true,
+                    'msg' => "",
                 ];
             }
         }else{
             $ret = [
-                status => false,
-                msg => "錯誤！",
+                'status' => false,
+                'msg' => "錯誤！",
             ];
         }
         return $ret;
@@ -125,10 +132,84 @@ class Group
             $b = [
                 'group_id' => $row['group_id'],
                 'gname' => $row['gname'],
+                'manager' => $row['manager'],
                 'gphoto' => $row['gphoto'],
             ];
             array_push($a,$b);
         }
         return $a;
+        unset($a);
+        unset($sql);
+        unset($result);
     }
+
+    public function getMyJoin(){  //我加入的群組(陣列)
+        $sql = "SELECT * FROM `group_q` INNER JOIN `group_data` ON (`group_q`.`group_id`=`group_data`.`group_id`)";
+        $sql.= "WHERE `sid` = ".$this->sid." AND `request` = 1 AND `respond` = 1";
+        $result = $this->mysqli->query($sql);
+        $a = array();
+        while ($row = $result->fetch_array()){
+           $a[] = $row['group_id'];
+        }
+        return $a;
+        unset($a);
+        unset($sql);
+        unset($result);
+    }
+
+    public function showMyJoin(){
+        $getMyJoin = $this->getMyJoin();
+        if($getMyJoin){
+            $emGroup = implode(',',$getMyJoin); //將取得的朋友（鎮列） 轉換成","排列
+            $sql = "SELECT * FROM `group_data` WHERE `group_id` IN (".$emGroup.")";
+            $result = $this->mysqli->query($sql);
+            while ($row = $result->fetch_array()){
+                $group[] = $row;
+            }
+            return $group;
+        }else{
+            return false;
+        }
+        unset($getMyJoin);
+        unset($emGroup);
+        unset($sql);
+        unset($result);
+
+    }
+
+    public function join(){
+        $sql = "INSERT INTO `group_q` ('id','sid','group_id',`request`,`respond`) VALUES (NULL,'".$this->sid."','".$this->group_id."','1',NULL)";
+        if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息
+            printf("Errormessage: %s\n", $this->mysqli->error);
+        }else{
+            $ret = [
+                'status' => true,
+                'msg' => "",
+            ];
+        }
+        return $ret;
+        unset($ret);
+        unset($sql);
+    }
+
+    public function checkjoin(){
+        $sql = "SELECT * FROM `group_q` INNER JOIN `group_data` ON (`group_q`.`group_id`=`group_data`.`group_id`) INNER `member_data` ON(`group_q`.`sid`=`member_data`.`SID`)";
+        $sql.= "WHERE `manager` = ".$this->sid." AND `request` = 1";
+        $result = $this->mysqli->query($sql);
+        $a = array();
+        while ($row = $result->fetch_array()){
+            $b = [
+                'group_id' => $row['group_id'],
+                'sid' => $row['sid'],
+                'name' => $row['name'],
+                'photo' => $row['photo'],
+            ];
+            array_push($a,$b);
+        }
+        return $a;
+        unset($a);
+        unset($sql);
+        unset($result);
+    }
+
 }

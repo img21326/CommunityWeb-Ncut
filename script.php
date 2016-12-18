@@ -54,7 +54,7 @@ success: function(data){
 if(data.sid!="null"){
 $(".search-friend-result").html("");
 $.each(data, function(i, item) {
-var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'><a href=\"member.php?id="+item.sid+"\">"+item.name+"<\/a><\/li>";
+var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'><a href=\""+item.class+".php?id="+item.sid+"\">"+item.name+"<\/a><\/li>";
         $(".search-friend-result").append(html);
         });
         $(".search-friend-result .list-group").fadeIn();

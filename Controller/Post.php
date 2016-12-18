@@ -43,7 +43,7 @@ class Post
 //ON post.group_id = group_data.group_id
 //WHERE post.SID in (5,2)
 //ORDER by `post_time` DESC LIMIT 0,10
-    public static function showPost($start,$val){ //從哪裡開始,取幾筆
+    public static function showPost($start,$val){ //主頁面的文章
         $mysqli = Connect::conn();
         $Friend = new Friend();
         $friends = $Friend->getFriend();
@@ -66,7 +66,7 @@ class Post
         }
     }
 
-    public static function friendPost($sid,$start,$val){ //從哪裡開始,取幾筆
+    public static function friendPost($sid,$start,$val){ //朋友頁面的文章
         $mysqli = Connect::conn();
         $Friend = new Friend();
         $friends = $Friend->getFriend();

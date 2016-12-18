@@ -80,24 +80,24 @@ if(isset($_GET['do'])){
         <div class="">
 
         </div>
-        <div class="col-md-1">
-            <?php if($addedFriend==0){ ?>
-                <img src="images/add-contact.png" style="max-width: 64px;" class="ko addfriend" qw="加入好友">
-            <?php }elseif($addedFriend==1){ ?>
-                <img src="images/add-contact%20(1).png"  style="max-width: 64px;" class="ko resetfriend" qw="好友確認中">
-            <?php }elseif($addedFriend==2){ ?>
-                <img src="images/friends-talking.png"  style="max-width: 64px;" class="ko" qw="已成為好友">
-            <?php }elseif($addedFriend==3){ ?>
-                <img src="images/friends-talking.png"  style="max-width: 64px;" class="ko addfriend" qw="您還沒回復哦">
-            <?php } ?>
-        </div>
-        <div class="col-md-offset-3 col-md-5">
-            <ul>
-                <li>姓名：<?php echo $member->name ;?></li>
-                <li>電話：<?php echo $member->phone ;?></li>
-                <li>email：<?php echo $member->email ;?></li>
-            </ul>
 
+
+
+        <div class="col-md-offset-3 col-md-5">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success">姓名：<?php echo $member->name ;?></li>
+                <li class="list-group-item list-group-item-info">電話：<?php echo $member->phone ;?></li>
+                <li class="list-group-item list-group-item-warning">email：<?php echo $member->email ;?></li>
+                <li class="list-group-item list-group-item-warning">好友選項：<?php if($addedFriend==0){ ?>
+                        <img src="images/add-contact.png" style="max-width: 22px;" class="ko addfriend" qw="加入好友">
+                    <?php }elseif($addedFriend==1){ ?>
+                        <img src="images/add-contact%20(1).png"  style="max-width: 22px;" class="ko resetfriend" qw="好友確認中">
+                    <?php }elseif($addedFriend==2){ ?>
+                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko" qw="已成為好友">
+                    <?php }elseif($addedFriend==3){ ?>
+                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko addfriend" qw="您還沒回復哦">
+                    <?php } ?></li>
+            </ul>
         </div>
     </div>
     <div class="row marketing">
@@ -108,16 +108,22 @@ if(isset($_GET['do'])){
                     $posts = Post::friendPost($_GET['id'],0,10);
                     if($posts){
                         foreach ($posts as $post){ ?>
+            <div class="panel panel-info">
+                <div class="panel-heading">
                             <h4><?php echo $post['name'];
                                 if(isset($post['gname'])){
                                     echo " 在 ".$post['gname']." 社團的貼文";
                                 }else{
                                     echo " 在 自己 的貼文";
                                 }
-                                ?></h4>
+                                ?>
+                            </h4>
                             <span><?php echo $post['post_time'];?></span>
+                </div>
+                <div class="panel-body">
                             <p><?php echo $post['contact'];?></p>
-                            <hr>
+                </div>
+            </div>
                         <?php   }
                     }else{
                         echo "<h2>本人未發任何文章</h2>";
@@ -129,6 +135,7 @@ if(isset($_GET['do'])){
                 echo "<h2>你們還沒有成為好友哦!</h2>";
             }
             ?>
+
 
 
         </div>

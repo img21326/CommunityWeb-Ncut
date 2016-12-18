@@ -10,7 +10,6 @@ session_start();
 include ('Connect/Connect.php');
 include('Controller/Auth.php');
 include ('Controller/Gobal.php');
-include ('Controller/Friend.php');
 include ('Controller/Group.php');
 $s = Auth::check();
 if(!$s){
@@ -24,6 +23,12 @@ if(isset($_POST)){
         $r = $group->add($_POST);
         if(!$r['status']){
             return redirect('?meg=gnameused');
+            unset($r);
+        }
+    }elseif(isset($_POST['editgroup'])){
+        $r = $group->edit($_POST,$_POST['groupid']);
+        if(!$r['status']){
+            return redirect('?meg=editerror');
             unset($r);
         }
     }
@@ -40,23 +45,38 @@ if(isset($_POST)){
                 <button class="btn btn-success" onclick="addGroup()" style="margin-bottom: 10px;">創建群組</button>
                 <?php
                     $mygroups = $group->getMy();
-                    if(!empty($mygroups)) {  //顯示+的朋友
-                        foreach ($mygroups as $mygroup){ ?>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="group-box">
-                                        <div class="col-md-3">
-                                            <img src="<?php echo $mygroup['gphoto'];?>" style="max-width: 60px;" class="img-circle">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h3><?php echo $mygroup['gname'];?></h3>
-                                        </div>
+                    if(!empty($mygroups)) {  //顯示擬辦的群組 ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">你創建的群組</div>
+                            <ul class="list-group">
+                        <?php foreach ($mygroups as $mygroup){ ?>
 
-                                    </div>
-                                </div>
-                            </div>
-                    <?php }
-                    }
+                                    <li class="list-group-item">
+                                        <div class="group-box">
+                                            <div class="col-md-3">
+                                                <img src="<?php echo $mygroup['gphoto'];?>" style="max-width: 60px;" class="img-circle">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="col-md-6">
+                                                    <h3><?php echo $mygroup['gname'];?></h3>
+                                                </div>
+                                            </div>
+                                            <div class="btn-group" style="float: right;">
+                                                <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a onclick="editGroup(<?php echo $mygroup['group_id']; ?>,'<?php echo $mygroup['gname'];?>')">修改</a></li>
+                                                    <li><a onclick="deleteGroup(<?php echo $mygroup['group_id']; ?>)">刪除</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </li>
+
+
+                    <?php } ?>
+                            </ul>
+                </div>
+                   <?php }
                     //$friends = $cfriends->showFriend();
                     //if(!empty($friends)){  //顯示好朋友
                      //   foreach ($friends as $friend){ ?>
@@ -83,7 +103,8 @@ if(isset($_POST)){
         </div>
         <div class="addGroup" style="display: none;margin: 10px;">
             <form class="form-signin" role="form"  style="width: 300px;margin-left: auto;margin-right: auto;" method="post"  enctype="multipart/form-data">
-                <input type="hidden" name="addgroup">
+                <input type="hidden" name="addgroup" id="dd">
+                <input type="hidden" name="groupid" id="groupid">
                 <label for="inputEmail" class="sr-only">群組名稱</label>
                 <div class="input-group">
                     <span class="input-group-addon"><img src="images/team.png" style="max-width: 18px;"> </span>
@@ -91,7 +112,7 @@ if(isset($_POST)){
                 </div>
                 <label for="inputEmail" class="sr-only">群組照片</label>
                 <div class="input-group" style="margin: 5px;">
-                    <input type="file" id="gphoto" name="gphoto" placeholder="群組照片" required="true" autofocus="">
+                    <input type="file" id="gphoto" name="gphoto">
                 </div>
                 <button class="btn btn-ls btn-primary " style="margin-top: 15px;" type="submit">註冊</button>
             </form>
@@ -123,7 +144,25 @@ if(isset($_POST)){
                 content: $('.addGroup'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         }
-
+        function deleteGroup(id) {
+            layer.confirm('確定要刪除嗎？', {
+                btn: ['確定','取消'] //按钮
+            }, function(){
+                location='deleteGroup.php?id='+id+"&page=group.php";
+            });
+        }
+        function editGroup(id,gname) {
+            $('.addGroup #gname').val("");
+            $('.addGroup #gname').val(gname);
+            $('.addGroup #dd').attr("name","editgroup")
+            $('.addGroup #groupid').attr("value",id)
+            layer.open({
+                type: 1,
+                shade: false,
+                title: false, //不显示标题
+                content: $('.addGroup'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
+        }
     </script>
 
 </html>
