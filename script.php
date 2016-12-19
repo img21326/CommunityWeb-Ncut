@@ -25,14 +25,19 @@
         anim: 6
         });
     <?php }elseif($_GET['meg']=='deleterror'){ ?>
-        layer.msg('出現問題！', {
+        layer.msg('刪除出現問題！', {
+        offset: 't',
+        anim: 6
+        });
+    <?php }elseif($_GET['meg']=='gnameused'){ ?>
+        layer.msg('群組名稱以被使用！', {
         offset: 't',
         anim: 6
         });
     <?php } ?>
 
 <?php } ?>
-
+/*  好友欄位AJAX */
 $('#searchname').change(function () {
 $.ajax({
 url: 'searchFriend.php',
@@ -49,7 +54,7 @@ success: function(data){
 if(data.sid!="null"){
 $(".search-friend-result").html("");
 $.each(data, function(i, item) {
-var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'><a href=\"member.php?id="+item.sid+"\">"+item.name+"<\/a><\/li>";
+var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'><a href=\""+item.class+".php?id="+item.sid+"\">"+item.name+"<\/a><\/li>";
         $(".search-friend-result").append(html);
         });
         $(".search-friend-result .list-group").fadeIn();
@@ -63,3 +68,13 @@ var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='mar
         $('#searchname').blur(function () {
         $(".search-friend-result .list-group").fadeOut();
         });
+/*  end-好友欄位AJAX */
+        /* 圖標TIP */
+        $('.ko').mouseenter(function() {
+        layer.tips($(this).attr('qw'), this, {
+        tips: [3, '#78BA32']
+        });
+        });
+        /* end圖標TIP */
+
+

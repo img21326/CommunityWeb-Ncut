@@ -12,7 +12,6 @@ class member
     public $phone;
     public $email;
     public $photo;
-
     public $mysqli;
 
     /**

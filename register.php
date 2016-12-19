@@ -15,6 +15,10 @@ if($s){
 }else{
     if(isset($_POST['register'])){
         $post = Auth::register($_POST);
+        if($post){
+            redirect('login.php?meg=register');
+        }
+
     }
 }
 

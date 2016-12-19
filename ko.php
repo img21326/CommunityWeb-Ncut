@@ -1,7 +1,7 @@
-<div class="col-md-offset-3 col-md-2 ko" qw="好朋友" onclick="location='friend.php'">
+<div class="col-md-offset-3 col-md-2 ko goodfriend" qw="好朋友" onclick="location='friend.php'">
     <img src="images/user.png" style="max-width: 80px;">
 </div>
-<div class="col-md-2 ko" qw="群組">
+<div class="col-md-2 ko group" qw="群組" onclick="location='group.php'">
     <img src="images/team.png" style="max-width: 80px;">
 </div>
 <div class="col-md-2 ko" qw="訊息">

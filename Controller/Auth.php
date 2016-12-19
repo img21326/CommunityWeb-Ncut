@@ -33,14 +33,13 @@ class Auth
                 return redirect('register.php?meg=usernamerror');
             }
             $photopath = self::uploadPhoto($_FILES['photo'],$request['username']);
-            $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `FID`, `group_id`, `sday`, `status`) VALUES (NULL, '";
+            $sql="INSERT INTO `member_data` (`SID`, `username`, `password`, `name`, `phone`, `email`,`photo`, `sday`, `status`) VALUES (NULL, '";
             $sql=$sql.$request['username']."', '".md5($request['password'])."','".$request['name']."','".$request['phone']."', '".$request['email']."','".$photopath."',";
-            $sql=$sql."NULL, NULL, CURRENT_TIMESTAMP,1)";
-            echo $sql;
+            $sql=$sql." CURRENT_TIMESTAMP,1)";
             if (!$mysqli->query($sql)) {  //讀取錯誤訊息
                printf("Errormessage: %s\n", $mysqli->error);
             }else{
-                return redirect('login.php?meg=register');
+                return true;
             }
             unset($sql);
             $mysqli->close();
@@ -49,6 +48,7 @@ class Auth
         public static function login($request){    //登入
             $mysqli = Connect::conn();
             $sql="select * from `member_data` where username='".$request['username']."' and password='".md5($request['password'])."'";
+            echo $sql;
             $result= $mysqli->query($sql);
             if(($result->num_rows)==1){
                 $user = $result->fetch_object();
@@ -100,7 +100,7 @@ class Auth
 
 
         public static function uploadPhoto($file,$name){
-            $uploaddir = 'images/';
+            $uploaddir = 'images/users/';
             $uploadfile = $uploaddir . basename(rand(1111, 9999).$file['name']);
             if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
                 return $uploadfile;

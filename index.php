@@ -20,12 +20,20 @@ if(!$s){
 }
 if(isset($_POST['button_post'])){
     $post = new Post();
-    $post->createPost($_POST);
+    $re = $post->createPost($_POST);
+    if($re){
+        redirect('?meg=postfinish');
+    }
 } //看看是否有新增貼文
 
 if(isset($_POST['button_edit'])){
     $edit = new Post();
-    $edit->editPost($_POST['post_id'],$_POST);
+    $redit = $edit->editPost($_POST['post_id'],$_POST);
+    if($redit){
+        redirect('?meg=editfinish');
+    }else{
+        redirect('?meg=editerror');
+    }
 }
 ?>
 
@@ -34,58 +42,63 @@ if(isset($_POST['button_edit'])){
     <body>
     <div class="container">
         <?php include_once ("header.php");?>
-        <div class="col-md-offset-3 col-lg-7">
-            <label>
-                新增貼文:
-            </label>
-
-            <form method="post">
-                <textarea type="text"  name ="contact" class="form-control"  rows="3" placeholder="請輸入..."></textarea>
-                <input type="submit" name="button_post" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;">
-            </form>
-            <hr>
+        <div class="col-md-offset-2 col-lg-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <label>
+                        新增貼文
+                    </label>
+                </div>
+                <div class="panel-body">
+                    <form method="post">
+                        <textarea type="text"  name ="contact" class="form-control"  rows="3" placeholder="請輸入..."></textarea>
+                        <input type="submit" name="button_post" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;">
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="row marketing">
-            <div class="col-md-offset-3 col-lg-7">
+            <div class="col-md-offset-2 col-lg-8">
              <?php
                     $posts = Post::showPost(0,10);
 
                     if($posts){
                         foreach ($posts as $post){ ?>
                             <div class="postbox" id="post-<?php echo $post['post_id'];?>">
-                                <h4><?php echo $post['name'];
-                                    if(isset($post['gname'])){
-                                        echo " 在 ".$post['gname']." 社團的貼文";
-                                    }else{
-                                        echo " 在 自己 的貼文";
-                                    }
-                                    ?>
-
-
-                                    <?php if (Post::check($post['post_id'])){ ?>
-                                        <div class="btn-group"  style="float: right;">
-                                            <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a onclick="editpost(<?php echo $post['post_id']; ?>)">修改</a></li>
-                                                <li><a onclick="deletecheck(<?php echo $post['post_id']; ?>)">刪除</a></li>
-                                            </ul>
+                                <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <h4><img src="<?php echo $post['photo'];?>" style='margin-right:5px;max-width: 40px;-webkit-border-radius: 35px;-moz-border-radius: 35px;border-radius: 35px;'>
+                                                <?php echo $post['name'];
+                                                if(isset($post['gname'])){
+                                                    echo "►".$post['gname']." 社團的貼文";
+                                                }else{
+    //                                        echo " 在 自己 的貼文";
+                                                }
+                                                ?>
+                                            </h4>
+                                            <span><?php echo $post['post_time'];?></span>
                                         </div>
+                                        <div class="panel-body">
+                                            <p><?php echo $post['contact'];?></p>
+                                            <?php if (Post::check($post['post_id'])){ ?>
+                                                <div class="btn-group"  style="float: right;">
+                                                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a onclick="editpost(<?php echo $post['post_id']; ?>)">修改</a></li>
+                                                        <li><a onclick="deletecheck(<?php echo $post['post_id']; ?>)">刪除</a></li>
+                                                    </ul>
+                                                </div>
 
-                                    <?php } ?>
-                                </h4>
-                                <span><?php echo $post['post_time'];?></span>
-                                <p><?php echo $post['contact'];?></p>
+                                            <?php } ?>
+                                        </div>
+                                </div>
                             </div>
-                            <hr>
                 <?php   }
                     }
 
 
                 ?>
-<form method="post">
-    <textarea type="text"  name ="contact" class="form-control"  rows="3"></textarea>
-    <input type="submit" name="button_edit" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;">
-</form>
+
 
             </div>
         </div>
@@ -108,12 +121,14 @@ if(isset($_POST['button_edit'])){
             var html = "<form method=\"post\"><input type='hidden' name='post_id' value='"+post_id+"'><textarea type=\"text\"  name =\"contact\" class=\"form-control\"  rows=\"3\">"+$("#post-"+post_id+" p").html()+"</textarea><input type=\"submit\" name=\"button_edit\" id=\"button\" value=\"送出\" class=\"btn btn-default\" style=\"margin-top: 5px;\"></form>"
             $("#post-"+post_id+" p").html(html);
         }
-        $('.ko').mouseenter(function() {
-            layer.tips($(this).attr('qw'), this, {
-                tips: [3, '#78BA32']
-            });
+        <?php
+        $friend = new Friend();
+        $resu = $friend->checkInvideFriend();
+        if($resu){ ?>
+        layer.tips('<?php echo count($resu);?>', '.goodfriend', {
+            tips: [4, 'rgba(255, 10, 10, 0.75)']
         });
-
+        <?php } ?>
 
 
     </script>
