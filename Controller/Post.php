@@ -56,7 +56,9 @@ class Post
             $sql = $sql . " ORDER BY `post_time` DESC LIMIT ".$start.",".$val;
             $result= $mysqli->query($sql);
             while ($row = $result->fetch_array()){
-                $posts[] = $row;
+                if(is_null($row['group_id'])) {  //再群組發佈的不顯示
+                    $posts[] = $row;
+                }
             }
         }
         if(!empty($posts)){
@@ -77,7 +79,9 @@ class Post
         $sql = $sql . " ORDER BY `post_time` DESC LIMIT ".$start.",".$val;
         $result= $mysqli->query($sql);
         while ($row = $result->fetch_array()){
-            $posts[] = $row;
+            if(is_null($row['group_id'])) {//再群組發佈的不顯示
+                $posts[] = $row;
+            }
         }
         if(isset($posts)){
             return $posts;
