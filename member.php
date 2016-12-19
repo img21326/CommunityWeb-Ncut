@@ -89,13 +89,13 @@ if(isset($_GET['do'])){
                 <li class="list-group-item list-group-item-info">電話：<?php echo $member->phone ;?></li>
                 <li class="list-group-item list-group-item-warning">email：<?php echo $member->email ;?></li>
                 <li class="list-group-item list-group-item-warning">好友選項：<?php if($addedFriend==0){ ?>
-                        <img src="images/add-contact.png" style="max-width: 22px;" class="ko addfriend" qw="加入好友">
+                        <img src="images/add-contact.png" style="max-width: 22px;" class="ko addfriend" qw="加入好友">加入好友
                     <?php }elseif($addedFriend==1){ ?>
-                        <img src="images/add-contact%20(1).png"  style="max-width: 22px;" class="ko resetfriend" qw="好友確認中">
+                        <img src="images/add-contact%20(1).png"  style="max-width: 22px;" class="ko resetfriend" qw="好友確認中">好友確認中
                     <?php }elseif($addedFriend==2){ ?>
-                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko" qw="已成為好友">
+                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko" qw="已成為好友">已成為好友
                     <?php }elseif($addedFriend==3){ ?>
-                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko addfriend" qw="您還沒回復哦">
+                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko addfriend" qw="您還沒回復哦">您還沒回復哦
                     <?php } ?></li>
             </ul>
         </div>

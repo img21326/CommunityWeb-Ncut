@@ -145,22 +145,29 @@ class Group
 
     public function getMyJoin(){  //我加入的群組(陣列)
         $sql = "SELECT * FROM `group_q` INNER JOIN `group_data` ON (`group_q`.`group_id`=`group_data`.`group_id`)";
-        $sql.= "WHERE `sid` = ".$this->sid." AND `request` = 1 AND `respond` = 1";
+        $sql.= "WHERE (  `sid` =  ".$this->sid." AND `request` = 1 AND `respond` = 1 ) ";
         $result = $this->mysqli->query($sql);
         $a = array();
         while ($row = $result->fetch_array()){
            $a[] = $row['group_id'];
         }
+        $sql1 = "SELECT * FROM `group_data` WHERE `manager` = ".$this->sid;
+        $result1 = $this->mysqli->query($sql1);
+        while ($row1 = $result1->fetch_array()){
+            $a[] = $row1['group_id'];
+        }
         return $a;
         unset($a);
         unset($sql);
         unset($result);
+        unset($sql1);
+        unset($result1);
     }
 
     public function showMyJoin(){
         $getMyJoin = $this->getMyJoin();
         if($getMyJoin){
-            $emGroup = implode(',',$getMyJoin); //將取得的朋友（鎮列） 轉換成","排列
+            $emGroup = implode(',',$getMyJoin); //將取得的GROUP（鎮列） 轉換成","排列
             $sql = "SELECT * FROM `group_data` WHERE `group_id` IN (".$emGroup.")";
             $result = $this->mysqli->query($sql);
             while ($row = $result->fetch_array()){
@@ -210,6 +217,42 @@ class Group
         unset($a);
         unset($sql);
         unset($result);
+    }
+
+    public function detial(){
+        $sql = "SELECT * FROM `group_data` INNER JOIN `member_data` ON member_data.SID = group_data.manager WHERE `group_id` = ".$this->group_id;
+        $result = $this->mysqli->query($sql);
+        $a = array();
+        while ($row = $result->fetch_array()){
+            $a = [
+                'group' => [
+                    'group_id' => $row['group_id'],
+                    'gname' => $row['gname'],
+                    'manager' => $row['name'],
+                    'name' => $row['gname'],
+                    'gphoto' => $row['gphoto'],
+                ],
+            ];
+        }
+        $sql1 = "SELECT * FROM `post` INNER JOIN `member_data` ON member_data.SID = post.SID WHERE `group_id` = ".$this->group_id;
+        $result1 = $this->mysqli->query($sql1);
+        $a['posts'] = array();
+        while ($row1 = $result1->fetch_array()){
+            $a['posts'][] = [
+                    'contact' => $row1['contact'],
+                    'post_time' => $row1['post_time'],
+                    'photo' => $row1['photo'],
+                    'name' => $row1['name'],
+                    'post_id'=>$row1['post_id'],
+            ];
+        }
+        return $a;
+        unset($a);
+        unset($sql);
+        unset($result);
+        unset($sql1);
+        unset($result1);
+
     }
 
 }

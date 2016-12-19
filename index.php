@@ -20,12 +20,20 @@ if(!$s){
 }
 if(isset($_POST['button_post'])){
     $post = new Post();
-    $post->createPost($_POST);
+    $re = $post->createPost($_POST);
+    if($re){
+        redirect('?meg=postfinish');
+    }
 } //看看是否有新增貼文
 
 if(isset($_POST['button_edit'])){
     $edit = new Post();
-    $edit->editPost($_POST['post_id'],$_POST);
+    $redit = $edit->editPost($_POST['post_id'],$_POST);
+    if($redit){
+        redirect('?meg=editfinish');
+    }else{
+        redirect('?meg=editerror');
+    }
 }
 ?>
 

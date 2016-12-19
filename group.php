@@ -10,6 +10,7 @@ session_start();
 include ('Connect/Connect.php');
 include('Controller/Auth.php');
 include ('Controller/Gobal.php');
+include ('Controller/Friend.php');
 include ('Controller/Group.php');
 $s = Auth::check();
 if(!$s){
