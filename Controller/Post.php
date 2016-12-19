@@ -99,10 +99,10 @@ class Post
             if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
                 printf("Errormessage: %s\n", $this->mysqli->error);
             }else {
-                return redirect($page."?meg=deletefinish");
+                return true;
             }
         }else{
-            return redirect($page."?meg=deleterror");
+            return false;
         }
 
         unset($sqlsid);
@@ -133,10 +133,10 @@ class Post
 
     public static function check($post_id){   //查看是否為作者
         $mysqli = Connect::conn();
-        $sql = "SELECT * FROM `post` WHERE `post_id` =". $post_id;
+        $sql = "SELECT * FROM `post` LEFT JOIN `group_data` ON (post.group_id=group_data.group_id) WHERE `post_id` =". $post_id;
         $result= $mysqli->query($sql);
         $user = $result->fetch_object();
-        if($_SESSION['sid']==$user->SID){
+        if(($_SESSION['sid']==$user->SID)||($_SESSION['sid']==$user->manager)){
             return true;
         }else{
             return false;

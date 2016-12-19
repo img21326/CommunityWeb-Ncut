@@ -19,6 +19,9 @@ if(!$s){
     $Auth = new Auth();
 }
 $group = new Group();
+$mygroups = $group->getMy();
+
+
 if(isset($_POST)){
     if(isset($_POST['addgroup'])){
         $r = $group->add($_POST);
@@ -34,6 +37,16 @@ if(isset($_POST)){
         }
     }
 }
+
+if(isset($_GET)){
+    if(isset($_GET['do'])){
+        switch ($_GET['do']){
+            case 'addmember':{
+                $okjoine = $group->okjoin($_GET['group_id'],$_GET['id']);
+            }
+        }
+    }
+}
 ?>
 
 <html>
@@ -45,15 +58,15 @@ if(isset($_POST)){
             <div class="col-md-offset-3 col-lg-7" style="margin-top: 15px;">
                 <button class="btn btn-success" onclick="addGroup()" style="margin-bottom: 10px;">創建群組</button>
                 <?php
-                    $mygroups = $group->getMy();
+
                     if(!empty($mygroups)) {  //顯示擬辦的群組 ?>
-                <div class="panel panel-default">
+                <div class="panel panel-success">
                     <div class="panel-heading">你創建的群組</div>
                             <ul class="list-group">
                         <?php foreach ($mygroups as $mygroup){ ?>
 
                                     <li class="list-group-item">
-                                        <div class="group-box">
+                                        <div class="friend-box" onclick="location='group_detail.php?id=<?php echo $mygroup['group_id'];?>'">
                                             <div class="col-md-3">
                                                 <img src="<?php echo $mygroup['gphoto'];?>" style="max-width: 60px;" class="img-circle">
                                             </div>
@@ -70,6 +83,27 @@ if(isset($_POST)){
                                                 </ul>
                                             </div>
                                         </div>
+                                        <?php
+
+                                        ?>
+                                        <?php if(count($mygroup['join'])>0){ ?>
+                                        <div class="col-md-offset-1 col-lg-11" style="margin-top: 15px;">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">加入請求</div>
+                                                <ul class="list-group">
+                                                    <?php foreach ($mygroup['join'] as $join){ ?>
+                                                        <li class="list-group-item">
+                                                            <img class="img-circle" style="max-width: 22px;" src="<?php echo $join[0]['photo'];?>">
+                                                            <?php echo $join[0]['name'];?>
+                                                            <div class="right">
+                                                                <button type="button" class="btn btn-info btn-xs" onclick=(location="group.php?do=addmember&id=<?php echo $join[0]['sid'];?>&group_id=<?php echo $join[0]['group_id'];?>")>加入</button>
+                                                            </div>
+                                                        </li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <?php } ?>
                                         <div class="clear"></div>
                                     </li>
 

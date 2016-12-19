@@ -42,27 +42,23 @@ if(isset($_POST['button_edit'])){
 
 $group = new Group($_GET['id']);
 $group_array = $group->detial();
-//$Friend = new Friend();
-//$friends = $Friend->getFriend();
-//
-//$addedFriend = ($Friend->checkAddFriend($_GET['id']));
-//if(isset($_GET['do'])){
-//    switch ($_GET['do']){
-//        case 'addfriend':
-//            $q = $Friend->addFriend($_GET['id']);
-//            if($q){
-//                return redirect($_SERVER['PHP_SELF']."?id=".$_GET['id']);
-//            }
-//            break;
-//        case 'resetfriend':
-//            $q = $Friend->resetFriend($_GET['id']);
-//            if($q){
-//                return redirect($_SERVER['PHP_SELF']."?id=".$_GET['id']);
-//            }
-//            break;
-//    }
-//
-//}
+$group_check = ($group->check());
+$join = $group->getMyJoin();
+
+if(isset($_GET['do'])){
+    switch ($_GET['do']){
+        case 'addgroup':
+        {
+            $q = $group->join();
+            if($q['status']){
+                redirect("group_detail.php?id=".$_GET['id']."&meg=addgroupok") ;
+            }
+            break;
+        }
+    }
+
+
+}
 ?>
 
 
@@ -105,20 +101,21 @@ $group_array = $group->detial();
             <ul class="list-group">
                 <li class="list-group-item list-group-item-success">群組名稱：<?php echo $group_array['group']['gname'];?></li>
                 <li class="list-group-item list-group-item-info">群組管理員：<?php echo $group_array['group']['manager'];?></li>
-<!--                <li class="list-group-item list-group-item-warning">好友選項：--><?php //if($addedFriend==0){ ?>
-<!--                        <img src="images/add-contact.png" style="max-width: 22px;" class="ko addfriend" qw="加入好友">加入好友-->
-<!--                    --><?php //}elseif($addedFriend==1){ ?>
-<!--                        <img src="images/add-contact%20(1).png"  style="max-width: 22px;" class="ko resetfriend" qw="好友確認中">好友確認中-->
-<!--                    --><?php //}elseif($addedFriend==2){ ?>
-<!--                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko" qw="已成為好友">已成為好友-->
-<!--                    --><?php //}elseif($addedFriend==3){ ?>
-<!--                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko addfriend" qw="您還沒回復哦">您還沒回復哦-->
-<!--                    --><?php //} ?><!--</li>-->
+                <li class="list-group-item list-group-item-warning">好友選項：<?php if($group_check==0){ ?>
+                        <img src="images/add-contact.png" style="max-width: 22px;" class="ko addgroup" qw="加入群組">加入群組
+                    <?php }elseif($group_check==1){ ?>
+                        <img src="images/add-contact%20(1).png"  style="max-width: 22px;" class="ko" qw="群組確認中">群組確認中
+                    <?php }elseif($group_check==2){ ?>
+                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko" qw="已成為群組成員">已成為群組成員
+                    <?php }elseif($group_check==3){ ?>
+                        <img src="images/friends-talking.png"  style="max-width: 22px;" class="ko addfriend" qw="群組管理員">群組管理員
+                    <?php } ?></li>
             </ul>
         </div>
     </div>
     <div class="row marketing">
         <div class="col-md-offset-3 col-lg-7">
+            <?php if(in_array($_GET['id'],$join)){?>
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <label>
@@ -133,9 +130,10 @@ $group_array = $group->detial();
                     </form>
                 </div>
             </div>
+            <?php } ?>
             <?php
-                $join = $group->getMyJoin();
-                if(in_array($_GET['id'],$join)){   //是否成為朋友
+
+                if(in_array($_GET['id'],$join)){   //是否為群組成員
                     if($group_array['posts']){
                         foreach ($group_array['posts'] as $post){ ?>
                             <div class="postbox" id="post-<?php echo $post['post_id'];?>">
@@ -188,13 +186,10 @@ $group_array = $group->detial();
     });
     <?php } ?>
 
-    $('.addfriend').click(function () {
-        location="member.php?do=addfriend&id=<?php echo $_GET['id'];?>";
+    $('.addgroup').click(function () {
+        location="group_detail.php?do=addgroup&id=<?php echo $_GET['id'];?>";
     });
 
-    $('.resetfriend').click(function () {
-        location="member.php?do=resetfriend&id=<?php echo $_GET['id'];?>";
-    });
 
     function deletecheck(post_id) {
         layer.confirm('確定要刪除嗎？', {

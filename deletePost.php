@@ -11,4 +11,7 @@ include('Controller/Auth.php');
 include ('Controller/Post.php');
 session_start();
 $post = new Post();
-echo $post->deletePost($_GET['id'],$_GET['page']);
+$re = $post->deletePost($_GET['id'],$_GET['page']);
+if($re){
+    redirect($_GET['page']);
+}

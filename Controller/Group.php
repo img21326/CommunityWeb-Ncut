@@ -124,21 +124,33 @@ class Group
         }
     }
     
-    public function getMy(){
-        $sql = "SELECT * FROM `group_data` WHERE `manager` = '".$this->sid."'";
+    public function getMy(){  //我自己開的群組
+        $sql = "SELECT group_data.group_id,gname, manager, gphoto, COUNT( respond ) as total FROM  `group_data` LEFT JOIN  `group_q` ON ( group_data.group_id = group_q.group_id )  WHERE `manager` = '".$this->sid."' GROUP BY group_data.group_id,gname, manager, gphoto";
         $result = $this->mysqli->query($sql);
         $a = array();
+        $joinmes = $this->JoinMe();
         while ($row = $result->fetch_array()){
-            $b = [
+            $b = array();
+            foreach ($joinmes as $joinme){
+                if($joinme['group_id']==$row['group_id']){
+                    $b[]=[
+                        $joinme,
+                    ];
+                }
+            }
+            $a[] = [
                 'group_id' => $row['group_id'],
                 'gname' => $row['gname'],
                 'manager' => $row['manager'],
                 'gphoto' => $row['gphoto'],
+                'total' => $row['total'],
+                'join' =>$b,
             ];
-            array_push($a,$b);
+
         }
         return $a;
         unset($a);
+        unset($b);
         unset($sql);
         unset($result);
     }
@@ -178,20 +190,41 @@ class Group
             return false;
         }
         unset($getMyJoin);
+        unset($group);
         unset($emGroup);
         unset($sql);
         unset($result);
 
     }
 
+    public function JoinMe(){
+        $getMyJoin = $this->getMyJoin();
+        $emGroup = implode(',',$getMyJoin); //將取得的GROUP（鎮列） 轉換成","排列
+        if($getMyJoin) {
+            $group=array();
+            $sql = "SELECT * FROM `group_q` INNER JOIN `member_data` ON (group_q.sid = member_data.SID) WHERE `request` = 1 AND (`respond` = 0 or `respond` is null) AND `group_id` IN (" . $emGroup . ")";
+            $result = $this->mysqli->query($sql);
+            while ($row = $result->fetch_array()) {
+                $group[] = $row;
+            }
+            return $group;
+        }else{
+            return false;
+        }
+        unset($getMyJoin);
+        unset($group);
+        unset($emGroup);
+        unset($sql);
+        unset($result);
+    }
+
     public function join(){
-        $sql = "INSERT INTO `group_q` ('id','sid','group_id',`request`,`respond`) VALUES (NULL,'".$this->sid."','".$this->group_id."','1',NULL)";
+        $sql = "INSERT INTO `group_q` (`id`,`sid`,`group_id`,`request`,`respond`) VALUES (NULL,'".$this->sid."','".$this->group_id."','1',NULL)";
         if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息
             printf("Errormessage: %s\n", $this->mysqli->error);
         }else{
             $ret = [
                 'status' => true,
-                'msg' => "",
             ];
         }
         return $ret;
@@ -199,24 +232,23 @@ class Group
         unset($sql);
     }
 
-    public function checkjoin(){
-        $sql = "SELECT * FROM `group_q` INNER JOIN `group_data` ON (`group_q`.`group_id`=`group_data`.`group_id`) INNER `member_data` ON(`group_q`.`sid`=`member_data`.`SID`)";
-        $sql.= "WHERE `manager` = ".$this->sid." AND `request` = 1";
-        $result = $this->mysqli->query($sql);
-        $a = array();
-        while ($row = $result->fetch_array()){
-            $b = [
-                'group_id' => $row['group_id'],
-                'sid' => $row['sid'],
-                'name' => $row['name'],
-                'photo' => $row['photo'],
-            ];
-            array_push($a,$b);
+    public function okjoin($group_id,$sid){   //回復答應加入
+        $sql_check = "SELECT * FROM `group_data` WHERE `group_id` = ".$group_id;
+        $manager =$this->mysqli->query($sql_check)->fetch_object()->manager;
+        if($manager==$this->sid){
+            $sql = "UPDATE `group_q` SET `respond` = 1 WHERE `group_id` = ".$group_id." AND `sid` = ".$sid;
+            if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息
+                printf("Errormessage: %s\n", $this->mysqli->error);
+            }else{
+                $ret = [
+                    'status' => true,
+                ];
+            }
         }
-        return $a;
-        unset($a);
+
+        return $ret;
+        unset($ret);
         unset($sql);
-        unset($result);
     }
 
     public function detial(){
@@ -255,4 +287,46 @@ class Group
 
     }
 
+    public function check(){
+        $sql1 = "SELECT * FROM `group_data` WHERE `manager` = ".$this->sid ." AND `group_id` = ".$this->group_id;
+        $result1 = $this->mysqli->query($sql1);
+        if($result1->num_rows != 1){  //如果不是管理員
+            $sql = "SELECT * FROM `group_q` WHERE `group_id` = ".$this->group_id ." AND `sid` = ".$this->sid;
+            $result = $this->mysqli->query($sql);
+            if($result->num_rows==1){
+                $row = $result->fetch_array();
+                if($row['request']==0){
+                    return 0; //沒有申請加入
+                }elseif($row['request']==1 && $row['respond']==0||NULL){
+                    return 1; //沒有背確認加入
+                }elseif($row['request']==1 && $row['respond']==1){
+                    return 2; //群組成員
+                }
+            }else{
+                return 0;//沒有申請加入
+            }
+        }
+        return 3; //管理員
+
+
+    }
+
 }
+
+//$sql = "SELECT * FROM `group_q` INNER JOIN `group_data` ON (`group_q`.`group_id`=`group_data`.`group_id`) INNER `member_data` ON(`group_q`.`sid`=`member_data`.`SID`)";
+//        $sql.= "WHERE `manager` = ".$this->sid." AND `request` = 1";
+//        $result = $this->mysqli->query($sql);
+//        $a = array();
+//        while ($row = $result->fetch_array()){
+//            $b = [
+//                'group_id' => $row['group_id'],
+//                'sid' => $row['sid'],
+//                'name' => $row['name'],
+//                'photo' => $row['photo'],
+//            ];
+//            array_push($a,$b);
+//        }
+//        return $a;
+//        unset($a);
+//        unset($sql);
+//        unset($result);
