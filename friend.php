@@ -30,6 +30,8 @@ if(isset($_GET['do'])){
     }
 
 }
+
+$title = "朋友-資管人聯絡簿";
 ?>
 
 <html>

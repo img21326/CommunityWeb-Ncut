@@ -20,7 +20,7 @@ if(!$s){
 }
 $group = new Group();
 $mygroups = $group->getMy();
-
+$myjoins = $group->showMyJoin(false);
 
 if(isset($_POST)){
     if(isset($_POST['addgroup'])){
@@ -47,6 +47,7 @@ if(isset($_GET)){
         }
     }
 }
+$title = "群組-資管人聯絡簿";
 ?>
 
 <html>
@@ -57,83 +58,77 @@ if(isset($_GET)){
         <div class="row marketing">
             <div class="col-md-offset-3 col-lg-7" style="margin-top: 15px;">
                 <button class="btn btn-success" onclick="addGroup()" style="margin-bottom: 10px;">創建群組</button>
-                <?php
+                <?php if(!empty($mygroups)) {  //顯示自己辦的群組 ?>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">你創建的群組</div>
+                                <ul class="list-group">
+                            <?php foreach ($mygroups as $mygroup){ ?>
 
-                    if(!empty($mygroups)) {  //顯示擬辦的群組 ?>
-                <div class="panel panel-success">
-                    <div class="panel-heading">你創建的群組</div>
-                            <ul class="list-group">
-                        <?php foreach ($mygroups as $mygroup){ ?>
-
-                                    <li class="list-group-item">
-                                        <div class="friend-box" onclick="location='group_detail.php?id=<?php echo $mygroup['group_id'];?>'">
-                                            <div class="col-md-3">
-                                                <img src="<?php echo $mygroup['gphoto'];?>" style="max-width: 60px;" class="img-circle">
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="col-md-6">
-                                                    <h3><?php echo $mygroup['gname'];?></h3>
+                                        <li class="list-group-item">
+                                            <div class="friend-box" onclick="location='group_detail.php?id=<?php echo $mygroup['group_id'];?>'">
+                                                <div class="col-md-3">
+                                                    <img src="<?php echo $mygroup['gphoto'];?>" style="max-width: 60px;" class="img-circle">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="col-md-6">
+                                                        <h3><?php echo $mygroup['gname'];?></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group" style="float: right;">
+                                                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a onclick="editGroup(<?php echo $mygroup['group_id']; ?>,'<?php echo $mygroup['gname'];?>')">修改</a></li>
+                                                        <li><a onclick="deleteGroup(<?php echo $mygroup['group_id']; ?>)">刪除</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                            <div class="btn-group" style="float: right;">
-                                                <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a onclick="editGroup(<?php echo $mygroup['group_id']; ?>,'<?php echo $mygroup['gname'];?>')">修改</a></li>
-                                                    <li><a onclick="deleteGroup(<?php echo $mygroup['group_id']; ?>)">刪除</a></li>
-                                                </ul>
+                                            <?php if(count($mygroup['join'])>0){ ?>
+                                            <div class="col-md-offset-1 col-lg-11" style="margin-top: 15px;">
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">加入請求</div>
+                                                    <ul class="list-group">
+                                                        <?php foreach ($mygroup['join'] as $join){ ?>
+                                                            <li class="list-group-item">
+                                                                <img class="img-circle" style="max-width: 22px;" src="<?php echo $join[0]['photo'];?>">
+                                                                <?php echo $join[0]['name'];?>
+                                                                <div class="right">
+                                                                    <button type="button" class="btn btn-info btn-xs" onclick=(location="group.php?do=addmember&id=<?php echo $join[0]['sid'];?>&group_id=<?php echo $join[0]['group_id'];?>")>加入</button>
+                                                                </div>
+                                                            </li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <?php } ?>
+                                            <div class="clear"></div>
+                                        </li>
+                        <?php } ?>
+                                </ul>
+                    </div>
+                <?php } ?>
+                <?php if(!empty($myjoins)) {  //顯示自己辦的群組 ?>
+                    <div class="panel panel-success">
+                        <div class="panel-heading">你加入的</div>
+                        <ul class="list-group">
+                            <?php foreach ($myjoins as $myjoin){ ?>
+
+                                <li class="list-group-item">
+                                    <div class="friend-box" onclick="location='group_detail.php?id=<?php echo $myjoin['group_id'];?>'">
+                                        <div class="col-md-3">
+                                            <img src="<?php echo $myjoin['gphoto'];?>" style="max-width: 60px;" class="img-circle">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="col-md-6">
+                                                <h3><?php echo $myjoin['gname'];?></h3>
                                             </div>
                                         </div>
-                                        <?php
-
-                                        ?>
-                                        <?php if(count($mygroup['join'])>0){ ?>
-                                        <div class="col-md-offset-1 col-lg-11" style="margin-top: 15px;">
-                                            <div class="panel panel-info">
-                                                <div class="panel-heading">加入請求</div>
-                                                <ul class="list-group">
-                                                    <?php foreach ($mygroup['join'] as $join){ ?>
-                                                        <li class="list-group-item">
-                                                            <img class="img-circle" style="max-width: 22px;" src="<?php echo $join[0]['photo'];?>">
-                                                            <?php echo $join[0]['name'];?>
-                                                            <div class="right">
-                                                                <button type="button" class="btn btn-info btn-xs" onclick=(location="group.php?do=addmember&id=<?php echo $join[0]['sid'];?>&group_id=<?php echo $join[0]['group_id'];?>")>加入</button>
-                                                            </div>
-                                                        </li>
-                                                    <?php } ?>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <?php } ?>
-                                        <div class="clear"></div>
-                                    </li>
-
-
-                    <?php } ?>
-                            </ul>
-                </div>
-                   <?php }
-                    //$friends = $cfriends->showFriend();
-                    //if(!empty($friends)){  //顯示好朋友
-                     //   foreach ($friends as $friend){ ?>
-                        <div class="friend-box" onclick="location='member.php?id=<?php //echo $friend['SID'];?>'">
-                            <div class="col-md-3">
-                                <img src="<?php //echo $friend['photo'];?>" style="max-width: 60px;">
-                            </div>
-                            <div class="col-md-9">
-<!--                                <ul>-->
-<!--                                    <li>姓名：--><?php ////echo $friend['name'];?><!--</li>-->
-<!--                                    <li>電話：--><?php ////echo $friend['phone'];?><!--</li>-->
-<!--                                    <li>email：--><?php ////echo $friend['email'];?><!--</li>-->
-<!--                                </ul>-->
-                            </div>
-                        </div>
-
-                    <?php    //}
-
-                    //}else{?>
-
-<!--                        <h3>您還沒有好友哦</h3>-->
-                <?php //} ?>
+                                    </div>
+                                    <div class="clear"></div>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         <div class="addGroup" style="display: none;margin: 10px;">

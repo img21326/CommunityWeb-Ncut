@@ -45,6 +45,7 @@ if(isset($_GET['do'])){
     }
 
 }
+$title =  $member->name."--資管人聯絡簿";
 ?>
 
 

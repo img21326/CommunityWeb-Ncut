@@ -59,6 +59,7 @@ if(isset($_GET['do'])){
 
 
 }
+$title = $group_array['group']['gname']."--資管人聯絡簿";
 ?>
 
 

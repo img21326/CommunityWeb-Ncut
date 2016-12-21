@@ -155,7 +155,7 @@ class Group
         unset($result);
     }
 
-    public function getMyJoin(){  //我加入的群組(陣列)
+    public function getMyJoin($manager = true){  //我加入的群組(陣列)     是否要加入自己的群組
         $sql = "SELECT * FROM `group_q` INNER JOIN `group_data` ON (`group_q`.`group_id`=`group_data`.`group_id`)";
         $sql.= "WHERE (  `sid` =  ".$this->sid." AND `request` = 1 AND `respond` = 1 ) ";
         $result = $this->mysqli->query($sql);
@@ -163,10 +163,12 @@ class Group
         while ($row = $result->fetch_array()){
            $a[] = $row['group_id'];
         }
-        $sql1 = "SELECT * FROM `group_data` WHERE `manager` = ".$this->sid;
-        $result1 = $this->mysqli->query($sql1);
-        while ($row1 = $result1->fetch_array()){
-            $a[] = $row1['group_id'];
+        if($manager){
+            $sql1 = "SELECT * FROM `group_data` WHERE `manager` = ".$this->sid;
+            $result1 = $this->mysqli->query($sql1);
+            while ($row1 = $result1->fetch_array()){
+                $a[] = $row1['group_id'];
+            }
         }
         return $a;
         unset($a);
@@ -176,8 +178,8 @@ class Group
         unset($result1);
     }
 
-    public function showMyJoin(){
-        $getMyJoin = $this->getMyJoin();
+    public function showMyJoin($manager = true){
+        $getMyJoin = $this->getMyJoin($manager);
         if($getMyJoin){
             $emGroup = implode(',',$getMyJoin); //將取得的GROUP（鎮列） 轉換成","排列
             $sql = "SELECT * FROM `group_data` WHERE `group_id` IN (".$emGroup.")";
@@ -247,6 +249,7 @@ class Group
         }
 
         return $ret;
+        unset($manager);
         unset($ret);
         unset($sql);
     }

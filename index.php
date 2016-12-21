@@ -35,6 +35,8 @@ if(isset($_POST['button_edit'])){
         redirect('?meg=editerror');
     }
 }
+
+$title = "首頁-資管人聯絡簿";
 ?>
 
 <html>
@@ -109,6 +111,7 @@ if(isset($_POST['button_edit'])){
     </div>
     </body>
     <script>
+
         <?php include_once ('script.php');?>
         function deletecheck(post_id) {
             layer.confirm('確定要刪除嗎？', {
