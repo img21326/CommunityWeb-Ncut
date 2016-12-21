@@ -62,7 +62,7 @@ $title = "首頁-資管人聯絡簿";
         <div class="row marketing">
             <div class="col-md-offset-2 col-lg-8">
              <?php
-                    $posts = Post::showPost(0,10);
+                    $posts = Post::showPost(0,50);
 
                     if($posts){
                         foreach ($posts as $post){ ?>

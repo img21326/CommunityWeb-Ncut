@@ -25,6 +25,7 @@ class Group
         if($this->checkName($request['gname'])){
             $photopath = $this->uploadPhoto($_FILES['gphoto'],$this->sid);
             $sql = "INSERT INTO `group_data` (`group_id`,`gname`,`manager`,`gphoto`) VALUE (NULL ,'".$request['gname']."','".$this->sid."','".$photopath."')";
+            echo $sql;
             if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息
                 printf("Errormessage: %s\n", $this->mysqli->error);
             }else{
@@ -120,7 +121,7 @@ class Group
         if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
             return $uploadfile;
         } else {
-            return false;
+            return $uploadfile;
         }
     }
     

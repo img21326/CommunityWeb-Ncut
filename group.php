@@ -22,22 +22,6 @@ $group = new Group();
 $mygroups = $group->getMy();
 $myjoins = $group->showMyJoin(false);
 
-if(isset($_POST)){
-    if(isset($_POST['addgroup'])){
-        $r = $group->add($_POST);
-        if(!$r['status']){
-            return redirect('?meg=gnameused');
-            unset($r);
-        }
-    }elseif(isset($_POST['editgroup'])){
-        $r = $group->edit($_POST,$_POST['groupid']);
-        if(!$r['status']){
-            return redirect('?meg=editerror');
-            unset($r);
-        }
-    }
-}
-
 if(isset($_GET)){
     if(isset($_GET['do'])){
         switch ($_GET['do']){
@@ -151,6 +135,23 @@ $title = "群組-資管人聯絡簿";
             <?php include_once ('footer.php'); ?>
         </footer>
     </div>
+    <?php
+    if(isset($_POST)){
+        if(isset($_POST['addgroup'])){
+            $r = $group->add($_POST);
+            if(!$r['status']){
+                //return redirect('?meg=gnameused');
+                //unset($r);
+            }
+        }elseif(isset($_POST['editgroup'])){
+            $r = $group->edit($_POST,$_POST['groupid']);
+            if(!$r['status']){
+                return redirect('?meg=editerror');
+                unset($r);
+            }
+        }
+    }
+    ?>
     </body>
     <script>
         <?php include_once ('script.php');?>
