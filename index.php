@@ -83,7 +83,8 @@ $title = "首頁-資管人聯絡簿";
                                         <div class="panel-body">
                                             <div class="inner"><?php echo $post['contact'];?></div>
                                             <?php if (Post::check($post['post_id'])){ ?>
-                                                <form method="post" id="edit-<?php echo $post['post_id'];?>" class="editor" style="display: none"><input type="hidden" name="post_id" value="25"><textarea type="text" id="25" name="contact" class="form-control ckeditor" rows="3"><?php echo $post['contact'];?></textarea><input type="submit" name="button_edit" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;"></form>
+                                                <form method="post" id="edit-<?php echo $post['post_id'];?>" class="editor" style="display: none">
+                                                    <input type="hidden" name="post_id" value="<?php echo $post['post_id'];?>"><textarea type="text" id="25" name="contact" class="form-control ckeditor" rows="3"><?php echo $post['contact'];?></textarea><input type="submit" name="button_edit" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;"></form>
                                                 <div class="btn-group"  style="float: right;">
                                                     <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
                                                     <ul class="dropdown-menu" role="menu">

@@ -104,7 +104,7 @@ class Post
         }else{
             return false;
         }
-
+        unset($post_id);
         unset($sqlsid);
         unset($sql);
     }
@@ -112,10 +112,12 @@ class Post
 
 
     public function editPost($post_id,$request){  //修改
-        $check = self::check($post_id);
+        var_dump($post_id);
+        $check = self::check($post_id);var_dump($check);
         if($check){
             $contact = $request['contact'];
             $sql = "UPDATE `post` SET `contact` = '".$contact."' WHERE `post`.`post_id` =".$post_id;
+            echo $sql;
             if (!$this->mysqli->query($sql)) {  //讀取錯誤訊息&&傳送資料
                 printf("Errormessage: %s\n", $this->mysqli->error);
             }else {
@@ -142,8 +144,10 @@ class Post
             return false;
         }
         unset($sql);
+        unset($post_id);
         $result->close();
         $mysqli->close();
+
     }
 }
 /*          新增文章    */
