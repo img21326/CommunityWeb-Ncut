@@ -78,6 +78,6 @@ var html = "<li class=\"list-group-item\"><img src=\""+item.photo+"\" style='mar
         /* end圖標TIP */
 
 
-        CKEDITOR.replace( 'contact' );
+
 
 

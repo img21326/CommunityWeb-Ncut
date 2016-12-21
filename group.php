@@ -65,18 +65,18 @@ $title = "群組-資管人聯絡簿";
                             <?php foreach ($mygroups as $mygroup){ ?>
 
                                         <li class="list-group-item">
-                                            <div class="friend-box" onclick="location='group_detail.php?id=<?php echo $mygroup['group_id'];?>'">
+                                            <div class="friend-box">
                                                 <div class="col-md-3">
                                                     <img src="<?php echo $mygroup['gphoto'];?>" style="max-width: 60px;" class="img-circle">
                                                 </div>
-                                                <div class="col-md-9">
+                                                <div class="col-md-9"  onclick="location='group_detail.php?id=<?php echo $mygroup['group_id'];?>'">
                                                     <div class="col-md-6">
                                                         <h3><?php echo $mygroup['gname'];?></h3>
                                                     </div>
                                                 </div>
                                                 <div class="btn-group" style="float: right;">
-                                                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
-                                                    <ul class="dropdown-menu" role="menu">
+
+                                                    <ul role="menu">
                                                         <li><a onclick="editGroup(<?php echo $mygroup['group_id']; ?>,'<?php echo $mygroup['gname'];?>')">修改</a></li>
                                                         <li><a onclick="deleteGroup(<?php echo $mygroup['group_id']; ?>)">刪除</a></li>
                                                     </ul>

@@ -81,8 +81,9 @@ $title = "首頁-資管人聯絡簿";
                                             <span><?php echo $post['post_time'];?></span>
                                         </div>
                                         <div class="panel-body">
-                                            <p><?php echo $post['contact'];?></p>
+                                            <div class="inner"><?php echo $post['contact'];?></div>
                                             <?php if (Post::check($post['post_id'])){ ?>
+                                                <form method="post" id="edit-<?php echo $post['post_id'];?>" class="editor" style="display: none"><input type="hidden" name="post_id" value="25"><textarea type="text" id="25" name="contact" class="form-control ckeditor" rows="3"><?php echo $post['contact'];?></textarea><input type="submit" name="button_edit" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;"></form>
                                                 <div class="btn-group"  style="float: right;">
                                                     <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown" aria-expanded="false">選項 <span class="caret"></span></button>
                                                     <ul class="dropdown-menu" role="menu">
@@ -111,7 +112,7 @@ $title = "首頁-資管人聯絡簿";
     </div>
     </body>
     <script>
-
+        CKEDITOR.replace( 'contact' );
         <?php include_once ('script.php');?>
         function deletecheck(post_id) {
             layer.confirm('確定要刪除嗎？', {
@@ -120,9 +121,11 @@ $title = "首頁-資管人聯絡簿";
                 location='deletePost.php?id='+post_id+"&page=index.php";
             });
         }
+
         function editpost(post_id) {
-            var html = "<form method=\"post\"><input type='hidden' name='post_id' value='"+post_id+"'><textarea type=\"text\"  name =\"contact\" class=\"form-control\"  rows=\"3\">"+$("#post-"+post_id+" p").html()+"</textarea><input type=\"submit\" name=\"button_edit\" id=\"button\" value=\"送出\" class=\"btn btn-default\" style=\"margin-top: 5px;\"></form>"
-            $("#post-"+post_id+" p").html(html);
+            $("#edit-"+post_id).show();
+//            var contact = $("#post-"+post_id+" .panel-body .inner").html();
+//            $("#post-"+post_id+" .panel-body").html(html);
         }
         <?php
         $friend = new Friend();

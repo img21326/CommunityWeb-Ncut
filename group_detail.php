@@ -177,6 +177,7 @@ $title = $group_array['group']['gname']."--資管人聯絡簿";
 </div>
 </body>
 <script>
+    CKEDITOR.replace( 'contact' );
     <?php include_once ('script.php');?>
     <?php
     $friend = new Friend();
