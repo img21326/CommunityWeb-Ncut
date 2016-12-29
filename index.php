@@ -12,6 +12,7 @@ include ('Controller/Auth.php');
 include ('Controller/Gobal.php');
 include ('Controller/Friend.php');
 include ('Controller/Post.php');
+include ('Controller/Leave.php');
 $s = Auth::check();
 if(!$s){
     return redirect('login.php?meg=nonlogin'); //沒有登入的話,跳到登入畫面
@@ -38,7 +39,11 @@ if(isset($_POST['button_edit'])){
 
 $title = "首頁-資管人聯絡簿";
 ?>
-
+<style>
+    .layui-layer-dialog{
+        top:120px!important;
+    }
+</style>
 <html>
     <?php include_once ('head.php'); ?>
     <body>
@@ -81,7 +86,6 @@ $title = "首頁-資管人聯絡簿";
                                             <span><?php echo $post['post_time'];?></span>
                                         </div>
                                         <div class="panel-body">
-                                            <div class="inner"><?php echo $post['contact'];?></div>
                                             <?php if (Post::check($post['post_id'])){ ?>
                                                 <form method="post" id="edit-<?php echo $post['post_id'];?>" class="editor" style="display: none">
                                                     <input type="hidden" name="post_id" value="<?php echo $post['post_id'];?>"><textarea type="text" id="25" name="contact" class="form-control ckeditor" rows="3"><?php echo $post['contact'];?></textarea><input type="submit" name="button_edit" id="button" value="送出" class="btn btn-default" style="margin-top: 5px;"></form>
@@ -94,6 +98,30 @@ $title = "首頁-資管人聯絡簿";
                                                 </div>
 
                                             <?php } ?>
+                                            <div class="inner"><?php echo $post['contact'];?></div>
+
+                                            <hr>
+                                            <?php  //顯示留言區
+                                                $leaves = Leave::get($post['post_id']);
+                                            ?>
+                                                    <ul class="list-group" style="margin-top: 5px; font-size: 8px; width: 60%;">
+                                                         <?php
+                                                                foreach ($leaves as $leave){
+                                                        ?>
+                                                            <li class="list-group-item"><?php echo $leave['name']?>:<?php echo $leave['contact']?></li>
+
+                                                            <?php
+                                                                }
+                                                            ?>
+                                                        <li class="list-group-item" ><img id="search-ajax-form" src="images/ajax.gif" style="max-height: 16px;margin-left: 30%;display: none;"><form class="leave-form">留言:<input type="text" id="leave" name="leave"><input type="hidden" id="post_id" name="post_id"><button type="submit">送出</button> </form></li>
+                                                    </ul>
+<!--                                            <form role="form">-->
+<!--                                                <div class="form-group">-->
+<!--                                                    <label for="exampleInputEmail1">留言</label>-->
+<!--                                                    <input type="text" class="form-control" id="leave" placeholder="留言">-->
+<!--                                                </div>-->
+<!--                                                <button type="submit" class="btn btn-default">送出</button>-->
+<!--                                            </form>-->
                                         </div>
                                 </div>
                             </div>
@@ -117,8 +145,9 @@ $title = "首頁-資管人聯絡簿";
         <?php include_once ('script.php');?>
         function deletecheck(post_id) {
             layer.confirm('確定要刪除嗎？', {
+                top: '10px',
                 btn: ['確定','取消'] //按钮
-            }, function(){
+            },function(){
                 location='deletePost.php?id='+post_id+"&page=index.php";
             });
         }
@@ -136,7 +165,22 @@ $title = "首頁-資管人聯絡簿";
             tips: [4, 'rgba(255, 10, 10, 0.75)']
         });
         <?php } ?>
+        $(".leave-form").submit(function () {
+            $.ajax({
+                url: 'leave.php',
+                type:"POST",
+                data: $(this).serialize(),
+                dataType: "json",
+                beforeSend: function() {
+                    $('#search-ajax-form').show();
+                },
+                complete: function(){
+                    $('#search-ajax-form').hide();
+                },
+                success: function(data){
 
+                }
+        })
 
     </script>
 

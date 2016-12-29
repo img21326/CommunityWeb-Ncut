@@ -25,14 +25,13 @@ class Leave
 
     public static function get($post_id){
         $mysqli = Connect::conn();
-        $sql = "SELECT * FROM `leave` WHERE `post_id` = '".$post_id."' ORDER BY `leave_tine` DESC";
+        $sql = "SELECT * FROM `leave` INNER JOIN `member_data` ON (`commiter` = `SID` ) WHERE `post_id` = '".$post_id."' ORDER BY `leave_time` DESC";
         $result = $mysqli->query($sql);
         $leave = array();
         while ($row = $result->fetch_array()){
             $leave[] = $row;
         }
         return $leave;
-
         $mysqli->close();
         unset($sql);
         unset($result);
