@@ -4,6 +4,6 @@
 <div class="col-md-2 ko group" qw="群組" onclick="location='group.php'">
     <img src="images/team.png" style="max-width: 80px;">
 </div>
-<div class="col-md-2 ko" qw="訊息">
+<div class="col-md-2 ko" qw="訊息" onclick="location='leave.php'">
     <img src="images/networking.png" style="max-width: 80px;">
 </div>

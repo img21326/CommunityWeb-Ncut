@@ -101,20 +101,26 @@ $title = "首頁-資管人聯絡簿";
                                             <div class="inner"><?php echo $post['contact'];?></div>
 
                                             <hr>
-                                            <?php  //顯示留言區
-                                                $leaves = Leave::get($post['post_id']);
-                                            ?>
-                                                    <ul class="list-group" style="margin-top: 5px; font-size: 8px; width: 60%;">
-                                                         <?php
-                                                                foreach ($leaves as $leave){
-                                                        ?>
-                                                            <li class="list-group-item"><?php echo $leave['name']?>:<?php echo $leave['contact']?></li>
-
-                                                            <?php
-                                                                }
-                                                            ?>
-                                                        <li class="list-group-item" ><img id="search-ajax-form" src="images/ajax.gif" style="max-height: 16px;margin-left: 30%;display: none;"><form class="leave-form">留言:<input type="text" id="leave" name="leave"><input type="hidden" id="post_id" name="post_id"><button type="submit">送出</button> </form></li>
-                                                    </ul>
+<!--                                            --><?php // //顯示留言區
+//                                                $leaves = Leave::get($post['post_id']);
+//                                            ?>
+<!--                                                    <ul class="list-group" style="margin-top: 5px; font-size: 8px; width: 60%;">-->
+<!--                                                         --><?php
+//                                                                foreach ($leaves as $leave){
+//                                                        ?>
+<!--                                                            <li class="list-group-item">--><?php //echo $leave['name']?><!--:--><?php //echo $leave['contact']?><!--</li>-->
+<!---->
+<!--                                                            --><?php
+//                                                                }
+//                                                            ?>
+<!--                                                        <li class="list-group-item" >-->
+<!--                                                            <form class="leave-form">留言:-->
+<!--                                                                <img id="search-ajax-form" src="images/ajax.gif" style="max-height: 16px;margin-left: 30%;display: none;">-->
+<!--                                                                <input type="text" id="leave" name="leave">-->
+<!--                                                                <input type="hidden" id="post_id" name="post_id">-->
+<!--                                                                <button type="submit">送出</button> </form>-->
+<!--                                                        </li>-->
+<!--                                                    </ul>-->
 <!--                                            <form role="form">-->
 <!--                                                <div class="form-group">-->
 <!--                                                    <label for="exampleInputEmail1">留言</label>-->
@@ -165,22 +171,7 @@ $title = "首頁-資管人聯絡簿";
             tips: [4, 'rgba(255, 10, 10, 0.75)']
         });
         <?php } ?>
-        $(".leave-form").submit(function () {
-            $.ajax({
-                url: 'leave.php',
-                type:"POST",
-                data: $(this).serialize(),
-                dataType: "json",
-                beforeSend: function() {
-                    $('#search-ajax-form').show();
-                },
-                complete: function(){
-                    $('#search-ajax-form').hide();
-                },
-                success: function(data){
 
-                }
-        })
 
     </script>
 
