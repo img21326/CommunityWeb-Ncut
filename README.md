@@ -25,6 +25,8 @@
 
         /*      登出      */
         //Auth::logout();
+        
+        
 ###POST- 動態貼文
         /*          新增文章    */
         //$post = new Post();
