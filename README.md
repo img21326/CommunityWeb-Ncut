@@ -26,7 +26,8 @@ AUTH-使用者
         
         
 
-###POST- 動態貼文
+POST- 動態貼文
+
         /*          新增文章    */
         //$post = new Post();
         //$arr = [
@@ -43,4 +44,4 @@ AUTH-使用者
         //Post::deletePost(2);
         /*          讀取文章    */
         //Post::showPost($a,$b);從哪裡開始,取幾筆
-###
+
