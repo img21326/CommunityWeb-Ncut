@@ -3,8 +3,9 @@
 ------
 AUTH-使用者
 
-        /*    註冊方法  */
-        //$arr =[
+#註冊方法
+
+        //$arr =[
         //    "username" => "user",
         //    "password" => "user",
         //    "name"     => "user",
@@ -22,10 +23,8 @@ AUTH-使用者
         //$s = Auth::check();
         /*      登出      */
         //Auth::logout();
-        
-        
-
-POST- 動態貼文
+        
+#POST- 動態貼文
 
         /*          新增文章    */
         //$post = new Post();
