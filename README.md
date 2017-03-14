@@ -1,9 +1,9 @@
 
 控制器
 ------
-AUTH-使用者
+###AUTH-使用者###
 
-        /*    註冊方法  */
+        /*    註冊方法  */
         //$arr =[
         //    "username" => "user",
         //    "password" => "user",
