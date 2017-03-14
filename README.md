@@ -1,7 +1,7 @@
 
-#控制器
+控制器
 ------
-###AUTH-使用者
+AUTH-使用者
 
         /*    註冊方法  */
         //$arr =[
@@ -19,14 +19,13 @@
         //    "password" => "user",
         //];
         //$s = Auth::login($arr);
-
         /*   查看登入狀態     */
         //$s = Auth::check();
-
-
         /*      登出      */
-        //Auth::logout();
-###
+        //Auth::logout();
+        
+        
+
 ###POST- 動態貼文
         /*          新增文章    */
         //$post = new Post();
