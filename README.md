@@ -12,7 +12,6 @@ AUTH-使用者
         //    "email"    => "test@user.com",
         //];
         //Auth::register($arr);
-
         /*     登入   */
         //$arr =[
         //    "username" => "user",
